@@ -1,0 +1,32 @@
+.wrapper {
+    width: 600px;
+}
+.ingridientsList {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    flex-wrap: wrap;
+    margin: 0;
+}
+.ingridientsList > li:nth-of-type(2n) {
+    margin-left: 24px;
+}
+.listItem {
+    text-align: center;
+    height: 208px;
+    max-width: 272px;
+    position: relative;
+}
+
+.itemPrice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ingridientsContainer {
+    height: 756px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
