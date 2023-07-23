@@ -1,7 +1,7 @@
 import styles from "./app.module.css";
 import { data } from "../../utils/data";
-import AppHeader from "./AppHeader";
-import BurgerIngridients from "./BurgerIngridients";
+import AppHeader from "../AppHeader/AppHeader";
+import BurgerIngridients from "../BurgerIngridients/BurgerIngridients";
 import BurgerComponents from "../BurgerComponents/BurgerComponents";
 import { useState } from "react";
 
@@ -37,6 +37,22 @@ function App() {
                 "https://code.s3.yandex.net/react/code/meat-04-mobile.png",
             image_large:
                 "https://code.s3.yandex.net/react/code/meat-04-large.png",
+            __v: 0,
+        },
+        {
+            _id: "60666c42cc7b410027a1a9b6",
+            name: "Биокотлета из марсианской Магнолии",
+            type: "main",
+            proteins: 420,
+            fat: 142,
+            carbohydrates: 242,
+            calories: 4242,
+            price: 424,
+            image: "https://code.s3.yandex.net/react/code/meat-01.png",
+            image_mobile:
+                "https://code.s3.yandex.net/react/code/meat-01-mobile.png",
+            image_large:
+                "https://code.s3.yandex.net/react/code/meat-01-large.png",
             __v: 0,
         },
         {

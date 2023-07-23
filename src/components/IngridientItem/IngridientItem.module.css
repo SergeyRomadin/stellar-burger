@@ -1,0 +1,12 @@
+.listItem {
+    text-align: center;
+    height: 208px;
+    max-width: 272px;
+    position: relative;
+}
+
+.itemPrice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

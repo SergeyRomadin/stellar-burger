@@ -1,6 +1,10 @@
 import styles from "./BurgerComponents.module.css";
-import BurgerComponent from "../BurgerComponent/BurgerComponent";
-import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+    Button,
+    ConstructorElement,
+    CurrencyIcon,
+    DragIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
 function BurgerComponents({ ingridients }) {
     return (
@@ -9,10 +13,14 @@ function BurgerComponents({ ingridients }) {
                 {ingridients.map((ingridient) => {
                     if (ingridient.type === "bun")
                         return (
-                            <BurgerComponent
+                            <ConstructorElement
+                                extraClass="mb-4"
                                 key={ingridient._id}
-                                ingridient={ingridient}
-                                type={"topBun"}
+                                type="top"
+                                isLocked={true}
+                                text={`${ingridient.name} (верх)`}
+                                price={ingridient.price}
+                                thumbnail={ingridient["image_mobile"]}
                             />
                         );
                 })}
@@ -27,7 +35,14 @@ function BurgerComponents({ ingridients }) {
                                     key={ingridient._id + i}
                                 >
                                     <DragIcon type="primary" />
-                                    <BurgerComponent ingridient={ingridient} />
+                                    <ConstructorElement
+                                        extraClass="ml-2"
+                                        key={ingridient._id}
+                                        isLocked={false}
+                                        text={ingridient.name}
+                                        price={ingridient.price}
+                                        thumbnail={ingridient["image_mobile"]}
+                                    />
                                 </li>
                             );
                     })}
@@ -37,13 +52,30 @@ function BurgerComponents({ ingridients }) {
                 {ingridients.map((ingridient) => {
                     if (ingridient.type === "bun")
                         return (
-                            <BurgerComponent
+                            <ConstructorElement
                                 key={ingridient._id}
-                                ingridient={ingridient}
-                                type={"bottomBun"}
+                                type="bottom"
+                                isLocked={true}
+                                text={`${ingridient.name} (низ)`}
+                                price={ingridient.price}
+                                thumbnail={ingridient["image_mobile"]}
                             />
                         );
                 })}
+            </div>
+            <div className={`${styles.orderContainer} pt-10`}>
+                <span className="text text_type_digits-medium pr-2">610</span>
+                <div className={`${styles.orderIconContainer} mr-10`}>
+                    <CurrencyIcon type="primary" />
+                </div>
+                <Button
+                    extraClass="mr-4"
+                    htmlType="button"
+                    type="primary"
+                    size="large"
+                >
+                    Оформить заказ
+                </Button>
             </div>
         </div>
     );

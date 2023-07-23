@@ -2,7 +2,7 @@ import {
     Counter,
     CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./BurgerIngridients.module.css";
+import styles from "./IngridientItem.module.css";
 
 function IngridientItem({ item, count }) {
     return (

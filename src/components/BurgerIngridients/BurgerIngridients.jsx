@@ -1,10 +1,6 @@
-import {
-    CurrencyIcon,
-    DeleteIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./BurgerIngridients.module.css";
-import { Tabs } from "./Tabs";
-import IngridientItem from "./IngridientItem";
+import { Tabs } from "../Tabs";
+import IngridientItem from "../IngridientItem/IngridientItem";
 
 function BurgerIngridients({ ingridients }) {
     return (
@@ -25,6 +21,7 @@ function BurgerIngridients({ ingridients }) {
                                 />
                             );
                         }
+                        return null;
                     })}
                 </ul>
                 <h2 className="text text_type_main-medium pt-10">Соусы</h2>
@@ -38,6 +35,7 @@ function BurgerIngridients({ ingridients }) {
                                 />
                             );
                         }
+                        return null;
                     })}
                 </ul>
                 <h2 className="text text_type_main-medium pt-10">Начинки</h2>
@@ -51,6 +49,7 @@ function BurgerIngridients({ ingridients }) {
                                 />
                             );
                         }
+                        return null;
                     })}
                 </ul>
             </div>
