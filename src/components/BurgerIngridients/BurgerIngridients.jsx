@@ -30,6 +30,7 @@ function BurgerIngridients({ ingridients }) {
                         if (item.type === "sauce") {
                             return (
                                 <IngridientItem
+                                    count={1}
                                     key={item._id + i}
                                     item={item}
                                 />
