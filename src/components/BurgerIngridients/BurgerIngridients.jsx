@@ -3,8 +3,21 @@ import { Tabs } from "../Tabs";
 import IngridientItem from "../IngridientItem/IngridientItem";
 import PropTypes from "prop-types";
 import { ingridientPropType } from "../../utils/prop-types";
+import { useMemo } from "react";
 
 function BurgerIngridients({ ingridients }) {
+    const buns = useMemo(
+        () => ingridients.filter((item) => item.type === "bun"),
+        [ingridients]
+    );
+    const mains = useMemo(
+        () => ingridients.filter((item) => item.type === "main"),
+        [ingridients]
+    );
+    const sauces = useMemo(
+        () => ingridients.filter((item) => item.type === "sauce"),
+        [ingridients]
+    );
     return (
         <div className={styles.wrapper}>
             <h1 className="text text_type_main-large pt-10">Соберите бургер</h1>
@@ -14,46 +27,29 @@ function BurgerIngridients({ ingridients }) {
             >
                 <h2 className="text text_type_main-medium">Булки</h2>
                 <ul className={`${styles.ingridientsList} pl-4`}>
-                    {ingridients.map((item, i) => {
-                        if (item.type === "bun") {
-                            return (
-                                <IngridientItem
-                                    key={item._id + i}
-                                    item={item}
-                                />
-                            );
-                        }
-                        return null;
-                    })}
+                    {buns.map((item, i) => (
+                        <IngridientItem
+                            count={1}
+                            key={item._id + i}
+                            item={item}
+                        />
+                    ))}
                 </ul>
                 <h2 className="text text_type_main-medium pt-10">Соусы</h2>
                 <ul className={`${styles.ingridientsList} pl-4`}>
-                    {ingridients.map((item, i) => {
-                        if (item.type === "sauce") {
-                            return (
-                                <IngridientItem
-                                    count={1}
-                                    key={item._id + i}
-                                    item={item}
-                                />
-                            );
-                        }
-                        return null;
-                    })}
+                    {sauces.map((item, i) => (
+                        <IngridientItem key={item._id + i} item={item} />
+                    ))}
                 </ul>
                 <h2 className="text text_type_main-medium pt-10">Начинки</h2>
                 <ul className={`${styles.ingridientsList} pl-4`}>
-                    {ingridients.map((item, i) => {
-                        if (item.type === "main") {
-                            return (
-                                <IngridientItem
-                                    key={item._id + i}
-                                    item={item}
-                                />
-                            );
-                        }
-                        return null;
-                    })}
+                    {mains.map((item, i) => (
+                        <IngridientItem
+                            count={1}
+                            key={item._id + i}
+                            item={item}
+                        />
+                    ))}
                 </ul>
             </div>
         </div>
