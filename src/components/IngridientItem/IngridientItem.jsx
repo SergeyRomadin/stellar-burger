@@ -3,6 +3,8 @@ import {
     CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./IngridientItem.module.css";
+import PropTypes from "prop-types";
+import { ingridientPropType } from "../../utils/prop-types";
 
 function IngridientItem({ item, count }) {
     return (
@@ -23,5 +25,10 @@ function IngridientItem({ item, count }) {
         </li>
     );
 }
+
+IngridientItem.propTypes = {
+    item: ingridientPropType,
+    count: PropTypes.number,
+};
 
 export default IngridientItem;

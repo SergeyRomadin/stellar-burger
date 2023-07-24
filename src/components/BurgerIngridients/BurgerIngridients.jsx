@@ -1,6 +1,8 @@
 import styles from "./BurgerIngridients.module.css";
 import { Tabs } from "../Tabs";
 import IngridientItem from "../IngridientItem/IngridientItem";
+import PropTypes from "prop-types";
+import { ingridientPropType } from "../../utils/prop-types";
 
 function BurgerIngridients({ ingridients }) {
     return (
@@ -57,5 +59,9 @@ function BurgerIngridients({ ingridients }) {
         </div>
     );
 }
+
+BurgerIngridients.propTypes = {
+    ingridients: PropTypes.arrayOf(ingridientPropType).isRequired,
+};
 
 export default BurgerIngridients;

@@ -5,6 +5,8 @@ import {
     CurrencyIcon,
     DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
+import { ingridientPropType } from "../../utils/prop-types";
 
 function BurgerComponents({ ingridients }) {
     return (
@@ -23,6 +25,7 @@ function BurgerComponents({ ingridients }) {
                                 thumbnail={ingridient["image_mobile"]}
                             />
                         );
+                    return null;
                 })}
             </div>
             <div className={`custom-scroll ${styles.ingridientsContainer}`}>
@@ -45,6 +48,7 @@ function BurgerComponents({ ingridients }) {
                                     />
                                 </li>
                             );
+                        return null;
                     })}
                 </ul>
             </div>
@@ -61,6 +65,7 @@ function BurgerComponents({ ingridients }) {
                                 thumbnail={ingridient["image_mobile"]}
                             />
                         );
+                    return null;
                 })}
             </div>
             <div className={`${styles.orderContainer} pt-10`}>
@@ -80,5 +85,9 @@ function BurgerComponents({ ingridients }) {
         </div>
     );
 }
+
+BurgerComponents.propTypes = {
+    ingridients: PropTypes.arrayOf(ingridientPropType).isRequired,
+};
 
 export default BurgerComponents;

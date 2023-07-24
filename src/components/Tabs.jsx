@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from "./Tabs.module.css";
 
 export const Tabs = () => {
     const [current, setCurrent] = useState("Булки");
     return (
-        <div className="mt-5" style={{ display: "flex" }}>
+        <div className={`${styles.tabs} mt-5`}>
             <Tab
                 value="Булки"
                 active={current === "Булки"}
