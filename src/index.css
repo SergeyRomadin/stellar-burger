@@ -1,3 +1,15 @@
 body {
-  margin: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.content-wrapper {
+    max-width: 1280px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
