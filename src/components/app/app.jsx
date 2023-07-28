@@ -129,7 +129,6 @@ function App() {
         getIngridients().then((data) => {
             setIngridients(data.data);
         });
-        console.log();
     }, []);
 
     const handleModalOpen = (content) => {
@@ -144,7 +143,10 @@ function App() {
         <div className={styles.app}>
             <AppHeader />
             <main className="content-wrapper">
-                <BurgerIngridients ingridients={ingridients} />
+                <BurgerIngridients
+                    handleModalOpen={handleModalOpen}
+                    ingridients={ingridients}
+                />
                 <BurgerComponents
                     ingridients={selectedIngridients}
                     handleModalOpen={handleModalOpen}

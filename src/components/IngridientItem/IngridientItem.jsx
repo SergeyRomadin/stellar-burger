@@ -5,10 +5,11 @@ import {
 import styles from "./IngridientItem.module.css";
 import PropTypes from "prop-types";
 import { ingridientPropType } from "../../utils/prop-types";
+import { memo } from "react";
 
-function IngridientItem({ item, count }) {
+function IngridientItem({ item, count, onClick }) {
     return (
-        <li className={styles.listItem}>
+        <li onClick={onClick} className={styles.listItem}>
             {count && <Counter count={count} size="default" extraClass="m-1" />}
             <img
                 className="pl-4 pr-4"
@@ -29,6 +30,7 @@ function IngridientItem({ item, count }) {
 IngridientItem.propTypes = {
     item: ingridientPropType,
     count: PropTypes.number,
+    onClick: PropTypes.func,
 };
 
-export default IngridientItem;
+export default memo(IngridientItem);

@@ -48,7 +48,7 @@ const Modal = (props) => {
     return isMounted ? (
         <Portal id={MODAL_CONTAINER_ID}>
             <div className={Styles.wrap} ref={rootRef} data-testid="wrap">
-                <div className={`${Styles.content} pr-20 pl-20`}>
+                <div className={`${Styles.content} pr-10 pl-10`}>
                     <button
                         type="button"
                         className={`${Styles.closeButton}`}

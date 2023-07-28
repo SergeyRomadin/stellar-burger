@@ -3,9 +3,10 @@ import { Tabs } from "../Tabs";
 import IngridientItem from "../IngridientItem/IngridientItem";
 import PropTypes from "prop-types";
 import { ingridientPropType } from "../../utils/prop-types";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
+import IngridientDetails from "../IngridientDetails/IngridientDetails";
 
-function BurgerIngridients({ ingridients }) {
+function BurgerIngridients({ ingridients, handleModalOpen }) {
     const buns = useMemo(
         () => ingridients.filter((item) => item.type === "bun"),
         [ingridients]
@@ -18,6 +19,12 @@ function BurgerIngridients({ ingridients }) {
         () => ingridients.filter((item) => item.type === "sauce"),
         [ingridients]
     );
+
+    const handleOpenModal = useCallback(
+        (item) => handleModalOpen(<IngridientDetails ingridient={item} />),
+        [handleModalOpen]
+    );
+
     return (
         <div className={styles.wrapper}>
             <h1 className="text text_type_main-large pt-10">Соберите бургер</h1>
@@ -32,13 +39,18 @@ function BurgerIngridients({ ingridients }) {
                             count={1}
                             key={item._id + i}
                             item={item}
+                            onClick={() => handleOpenModal(item)}
                         />
                     ))}
                 </ul>
                 <h2 className="text text_type_main-medium pt-10">Соусы</h2>
                 <ul className={`${styles.ingridientsList} pl-4`}>
                     {sauces.map((item, i) => (
-                        <IngridientItem key={item._id + i} item={item} />
+                        <IngridientItem
+                            key={item._id + i}
+                            item={item}
+                            onClick={() => handleOpenModal(item)}
+                        />
                     ))}
                 </ul>
                 <h2 className="text text_type_main-medium pt-10">Начинки</h2>
@@ -48,6 +60,7 @@ function BurgerIngridients({ ingridients }) {
                             count={1}
                             key={item._id + i}
                             item={item}
+                            onClick={() => handleOpenModal(item)}
                         />
                     ))}
                 </ul>
@@ -58,6 +71,7 @@ function BurgerIngridients({ ingridients }) {
 
 BurgerIngridients.propTypes = {
     ingridients: PropTypes.arrayOf(ingridientPropType).isRequired,
+    handleModalOpen: PropTypes.func,
 };
 
 export default BurgerIngridients;
