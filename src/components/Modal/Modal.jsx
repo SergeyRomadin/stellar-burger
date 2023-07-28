@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import PropTypes from "prop-types";
 import Portal, { createContainer } from "../Portal/Portal";
 
 import Styles from "./Modal.module.css";
@@ -7,9 +7,7 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const MODAL_CONTAINER_ID = "modal-container-id";
 
-const Modal = (props) => {
-    const { onClose, children } = props;
-
+const Modal = ({ onClose, children }) => {
     const rootRef = useRef(null);
     const [isMounted, setMounted] = useState(false);
 
@@ -65,7 +63,12 @@ const Modal = (props) => {
     ) : null;
 };
 
-export default Modal;
+Modal.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func,
+};
+
+export default memo(Modal);
 
 // type Props = {
 //   title: string,

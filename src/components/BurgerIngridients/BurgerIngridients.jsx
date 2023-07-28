@@ -3,7 +3,7 @@ import { Tabs } from "../Tabs";
 import IngridientItem from "../IngridientItem/IngridientItem";
 import PropTypes from "prop-types";
 import { ingridientPropType } from "../../utils/prop-types";
-import { useCallback, useMemo } from "react";
+import { memo, useMemo } from "react";
 import IngridientDetails from "../IngridientDetails/IngridientDetails";
 
 function BurgerIngridients({ ingridients, handleModalOpen }) {
@@ -20,11 +20,6 @@ function BurgerIngridients({ ingridients, handleModalOpen }) {
         [ingridients]
     );
 
-    const handleOpenModal = useCallback(
-        (item) => handleModalOpen(<IngridientDetails ingridient={item} />),
-        [handleModalOpen]
-    );
-
     return (
         <div className={styles.wrapper}>
             <h1 className="text text_type_main-large pt-10">Соберите бургер</h1>
@@ -39,7 +34,11 @@ function BurgerIngridients({ ingridients, handleModalOpen }) {
                             count={1}
                             key={item._id + i}
                             item={item}
-                            onClick={() => handleOpenModal(item)}
+                            onClick={() =>
+                                handleModalOpen(
+                                    <IngridientDetails ingridient={item} />
+                                )
+                            }
                         />
                     ))}
                 </ul>
@@ -49,7 +48,11 @@ function BurgerIngridients({ ingridients, handleModalOpen }) {
                         <IngridientItem
                             key={item._id + i}
                             item={item}
-                            onClick={() => handleOpenModal(item)}
+                            onClick={() =>
+                                handleModalOpen(
+                                    <IngridientDetails ingridient={item} />
+                                )
+                            }
                         />
                     ))}
                 </ul>
@@ -60,7 +63,11 @@ function BurgerIngridients({ ingridients, handleModalOpen }) {
                             count={1}
                             key={item._id + i}
                             item={item}
-                            onClick={() => handleOpenModal(item)}
+                            onClick={() =>
+                                handleModalOpen(
+                                    <IngridientDetails ingridient={item} />
+                                )
+                            }
                         />
                     ))}
                 </ul>
@@ -74,4 +81,4 @@ BurgerIngridients.propTypes = {
     handleModalOpen: PropTypes.func,
 };
 
-export default BurgerIngridients;
+export default memo(BurgerIngridients);

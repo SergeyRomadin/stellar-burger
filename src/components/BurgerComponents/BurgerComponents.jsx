@@ -7,7 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import { ingridientPropType } from "../../utils/prop-types";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import OrderDetails from "../OrderInfo/OrderDetails";
 
 function BurgerComponents({ ingridients, handleModalOpen }) {
@@ -90,4 +90,4 @@ BurgerComponents.propTypes = {
     handleModalOpen: PropTypes.func,
 };
 
-export default BurgerComponents;
+export default memo(BurgerComponents);

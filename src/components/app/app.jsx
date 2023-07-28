@@ -3,7 +3,7 @@ import { getIngridients } from "../../services/api";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngridients from "../BurgerIngridients/BurgerIngridients";
 import BurgerComponents from "../BurgerComponents/BurgerComponents";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Modal from "../Modal/Modal";
 
 function App() {
@@ -131,21 +131,21 @@ function App() {
         });
     }, []);
 
-    const handleModalOpen = (content) => {
+    const handleModalOpen = useCallback((content) => {
         setModalContent(content);
         setModalActive(true);
-    };
-    const handleModalClose = () => {
+    }, []);
+    const handleModalClose = useCallback(() => {
         setModalActive(false);
-    };
+    }, []);
 
     return (
         <div className={styles.app}>
             <AppHeader />
             <main className="content-wrapper">
                 <BurgerIngridients
-                    handleModalOpen={handleModalOpen}
                     ingridients={ingridients}
+                    handleModalOpen={handleModalOpen}
                 />
                 <BurgerComponents
                     ingridients={selectedIngridients}

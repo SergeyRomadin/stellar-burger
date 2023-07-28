@@ -28,7 +28,7 @@ function IngridientItem({ item, count, onClick }) {
 }
 
 IngridientItem.propTypes = {
-    item: ingridientPropType,
+    item: ingridientPropType.isRequired,
     count: PropTypes.number,
     onClick: PropTypes.func,
 };

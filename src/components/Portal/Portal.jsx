@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-
+import PropTypes from "prop-types";
 const createContainer = (options) => {
     if (document.getElementById(options.id)) {
         return;
@@ -35,6 +35,10 @@ const Portal = (props) => {
     return container ? createPortal(children, container) : null;
 };
 
+Portal.propTypes = {
+    id: PropTypes.string,
+    children: PropTypes.node,
+};
 export { createContainer, PORTAL_ERROR_MSG };
 export default Portal;
 
