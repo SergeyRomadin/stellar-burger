@@ -7,9 +7,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import { ingridientPropType } from "../../utils/prop-types";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
+import OrderDetails from "../OrderInfo/OrderDetails";
 
-function BurgerComponents({ ingridients }) {
+function BurgerComponents({ ingridients, handleModalOpen }) {
     const buns = useMemo(
         () => ingridients.filter((item) => item.type === "bun"),
         [ingridients]
@@ -75,6 +76,7 @@ function BurgerComponents({ ingridients }) {
                     htmlType="button"
                     type="primary"
                     size="large"
+                    onClick={() => handleModalOpen(<OrderDetails />)}
                 >
                     Оформить заказ
                 </Button>
@@ -85,6 +87,7 @@ function BurgerComponents({ ingridients }) {
 
 BurgerComponents.propTypes = {
     ingridients: PropTypes.arrayOf(ingridientPropType).isRequired,
+    handleModalOpen: PropTypes.func,
 };
 
-export default BurgerComponents;
+export default memo(BurgerComponents);

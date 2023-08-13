@@ -1,9 +1,10 @@
 import styles from "./app.module.css";
-import { data } from "../../utils/data";
+import { getIngridients } from "../../services/api";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngridients from "../BurgerIngridients/BurgerIngridients";
 import BurgerComponents from "../BurgerComponents/BurgerComponents";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import Modal from "../Modal/Modal";
 
 function App() {
     const [selectedIngridients, setSelectedIngridients] = useState([
@@ -120,12 +121,41 @@ function App() {
             __v: 0,
         },
     ]);
+    const [ingridients, setIngridients] = useState([]);
+    const [isModalActive, setModalActive] = useState(false);
+    const [modalContent, setModalContent] = useState();
+
+    useEffect(() => {
+        getIngridients().then((data) => {
+            setIngridients(data.data);
+        });
+    }, []);
+
+    const handleModalOpen = useCallback((content) => {
+        setModalContent(content);
+        setModalActive(true);
+    }, []);
+    const handleModalClose = useCallback(() => {
+        setModalActive(false);
+    }, []);
+
     return (
         <div className={styles.app}>
             <AppHeader />
             <main className="content-wrapper">
-                <BurgerIngridients ingridients={data} />
-                <BurgerComponents ingridients={selectedIngridients} />
+                <BurgerIngridients
+                    ingridients={ingridients}
+                    handleModalOpen={handleModalOpen}
+                />
+                <BurgerComponents
+                    ingridients={selectedIngridients}
+                    handleModalOpen={handleModalOpen}
+                />
+                {isModalActive && (
+                    <Modal title="some modal title" onClose={handleModalClose}>
+                        {modalContent}
+                    </Modal>
+                )}
             </main>
         </div>
     );
