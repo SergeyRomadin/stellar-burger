@@ -1,6 +1,5 @@
 import doneImg from "../../img/done.png";
 import styles from "./OrderDetails.module.css";
-import { ingridientPropType } from "../../utils/prop-types";
 import PropTypes from "prop-types";
 
 function OrderDetails({ name, orderNum }) {

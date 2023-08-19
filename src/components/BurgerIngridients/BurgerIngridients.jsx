@@ -1,15 +1,17 @@
 import styles from "./BurgerIngridients.module.css";
 import { Tabs } from "../Tabs";
 import PropTypes from "prop-types";
-import { ingridientPropType } from "../../utils/prop-types";
-import { memo, useContext, useMemo } from "react";
-import IngridientDetails from "../IngridientDetails/IngridientDetails";
-import { renderItems } from "../../utils/functions";
-import { IngridientsContext } from "../../context/ingridientsContext";
+import { memo, useContext, useMemo, useRef, useState } from "react";
+import { IngridientsContext } from "../../services/context/ingridientsContext";
 import IngridientItem from "../IngridientItem/IngridientItem";
 
 function BurgerIngridients({ handleModalOpen }) {
+    const [current, setCurrent] = useState("Булки");
     const [ingridients, dispatchIngridients] = useContext(IngridientsContext);
+
+    const bunsRef = useRef(null);
+    const saucesRef = useRef(null);
+    const mainsRef = useRef(null);
 
     const buns = useMemo(
         () => ingridients.filter((item) => item.type === "bun"),
@@ -25,14 +27,14 @@ function BurgerIngridients({ handleModalOpen }) {
     );
 
     const hanleAddIngridient = (item) => {
-        if (item.type === "bun" && item.__v > 0) return;
+        if (item.type === "bun" && item.count > 0) return;
         return dispatchIngridients({ type: "ADD", payload: item });
     };
 
     const renderItems = (items, handleClick) =>
         items.map((item, i) => (
             <IngridientItem
-                count={item.__v || null}
+                count={item.count || null}
                 key={item._id + i}
                 item={item}
                 onClick={
@@ -42,22 +44,62 @@ function BurgerIngridients({ handleModalOpen }) {
             />
         ));
 
+    function scrollTo(tab) {
+        switch (tab) {
+            case "Булки":
+                bunsRef.current.scrollIntoView();
+                break;
+            case "Соусы":
+                saucesRef.current.scrollIntoView();
+                break;
+            case "Начинки":
+                mainsRef.current.scrollIntoView();
+                break;
+            default:
+                throw new Error(`Ошибка скролла: ${tab}`);
+        }
+    }
+
     return (
         <div className={styles.wrapper}>
             <h1 className="text text_type_main-large pt-10">Соберите бургер</h1>
-            <Tabs />
+            <Tabs
+                scrollTo={scrollTo}
+                current={current}
+                setCurrent={(tab) => {
+                    scrollTo(tab);
+                }}
+            />
             <div
+                onScroll={(e) => {
+                    [bunsRef, saucesRef, mainsRef].forEach((section) => {
+                        const sectionTop = section.current.offsetTop;
+                        if (e.target.scrollTop >= sectionTop - 324) {
+                            console.log(section.current.textContent);
+                            setCurrent(section.current.textContent);
+                        }
+                    });
+                }}
                 className={`custom-scroll mt-10 ${styles.ingridientsContainer}`}
             >
-                <h2 className="text text_type_main-medium">Булки</h2>
+                <h2 ref={bunsRef} className="text text_type_main-medium">
+                    Булки
+                </h2>
                 <ul className={`${styles.ingridientsList} pl-4`}>
                     {renderItems(buns, hanleAddIngridient)}
                 </ul>
-                <h2 className="text text_type_main-medium pt-10">Соусы</h2>
+                <h2
+                    ref={saucesRef}
+                    className="text text_type_main-medium pt-10"
+                >
+                    Соусы
+                </h2>
                 <ul className={`${styles.ingridientsList} pl-4`}>
                     {renderItems(sauces, hanleAddIngridient)}
                 </ul>
-                <h2 className="text text_type_main-medium pt-10">Начинки</h2>
+                <h2 ref={mainsRef} className="text text_type_main-medium pt-10">
+                    Начинки
+                </h2>
                 <ul className={`${styles.ingridientsList} pl-4`}>
                     {renderItems(mains, hanleAddIngridient)}
                 </ul>
@@ -67,7 +109,6 @@ function BurgerIngridients({ handleModalOpen }) {
 }
 
 BurgerIngridients.propTypes = {
-    // ingridients: PropTypes.arrayOf(ingridientPropType).isRequired,
     handleModalOpen: PropTypes.func,
 };
 

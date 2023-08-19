@@ -12,5 +12,5 @@ export const ingridientPropType = PropTypes.shape({
     image: PropTypes.string,
     image_mobile: PropTypes.string,
     image_large: PropTypes.string,
-    __v: PropTypes.number,
+    count: PropTypes.number,
 });

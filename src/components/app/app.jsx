@@ -5,7 +5,7 @@ import BurgerIngridients from "../BurgerIngridients/BurgerIngridients";
 import BurgerComponents from "../BurgerComponents/BurgerComponents";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import Modal from "../Modal/Modal";
-import { IngridientsContext } from "../../context/ingridientsContext";
+import { IngridientsContext } from "../../services/context/ingridientsContext";
 
 const ingridientsReducer = (state, { type, payload }) => {
     switch (type) {
@@ -15,13 +15,17 @@ const ingridientsReducer = (state, { type, payload }) => {
             return state.map((item) => {
                 if (payload.type === "bun") {
                     if (item !== payload && item.type === "bun")
-                        return { ...item, __v: 0 };
+                        return { ...item, count: 0 };
                 }
-                return item === payload ? { ...item, __v: item.__v + 1 } : item;
+                return item === payload
+                    ? { ...item, count: item.count + 1 }
+                    : item;
             });
         case "REMOVE":
             return state.map((item) => {
-                return item === payload ? { ...item, __v: item.__v - 1 } : item;
+                return item === payload
+                    ? { ...item, count: item.count - 1 }
+                    : item;
             });
         default:
             throw new Error(`Wrong type of action: ${type}`);
@@ -30,6 +34,7 @@ const ingridientsReducer = (state, { type, payload }) => {
 
 function App() {
     const ingridients = useReducer(ingridientsReducer, []);
+    // eslint-disable-next-line
     const [ingridientsState, dispatchIngridients] = ingridients;
 
     const [isModalActive, setModalActive] = useState(false);
@@ -39,9 +44,13 @@ function App() {
         getIngridients().then((data) => {
             dispatchIngridients({
                 type: "INIT_INGRIDIENTS",
-                payload: data.data,
+                payload: data.data.map((el) => {
+                    el.count = 0;
+                    return el;
+                }),
             });
         });
+        // eslint-disable-next-line
     }, []);
 
     const handleModalOpen = useCallback((content) => {
