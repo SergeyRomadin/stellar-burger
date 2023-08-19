@@ -22,4 +22,16 @@ function getIngridients() {
     return api("/ingredients");
 }
 
-export { getIngridients };
+function postOrder(order) {
+    const params = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8",
+        },
+        body: order,
+    };
+
+    return api("/orders", params);
+}
+
+export { getIngridients, postOrder };
