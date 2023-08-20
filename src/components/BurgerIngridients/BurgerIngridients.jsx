@@ -65,7 +65,7 @@ function BurgerIngridients({ handleModalOpen }) {
             default:
                 throw new Error(`Ошибка скролла: ${tab}`);
         }
-    });
+    }, []);
 
     const handlerScroll = (e) => {
         [bunsRef, saucesRef, mainsRef].forEach((section) => {
