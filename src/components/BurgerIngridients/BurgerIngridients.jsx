@@ -1,7 +1,14 @@
 import styles from "./BurgerIngridients.module.css";
 import { Tabs } from "../Tabs";
 import PropTypes from "prop-types";
-import { memo, useContext, useMemo, useRef, useState } from "react";
+import {
+    memo,
+    useCallback,
+    useContext,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
 import { IngridientsContext } from "../../services/context/ingridientsContext";
 import IngridientItem from "../IngridientItem/IngridientItem";
 
@@ -44,7 +51,7 @@ function BurgerIngridients({ handleModalOpen }) {
             />
         ));
 
-    function scrollTo(tab) {
+    const scrollTo = useCallback((tab) => {
         switch (tab) {
             case "Булки":
                 bunsRef.current.scrollIntoView();
@@ -58,28 +65,24 @@ function BurgerIngridients({ handleModalOpen }) {
             default:
                 throw new Error(`Ошибка скролла: ${tab}`);
         }
-    }
+    });
+
+    const handlerScroll = (e) => {
+        [bunsRef, saucesRef, mainsRef].forEach((section) => {
+            const sectionTop = section.current.offsetTop;
+            if (e.target.scrollTop >= sectionTop - 324) {
+                console.log(section.current.textContent);
+                setCurrent(section.current.textContent);
+            }
+        });
+    };
 
     return (
         <div className={styles.wrapper}>
             <h1 className="text text_type_main-large pt-10">Соберите бургер</h1>
-            <Tabs
-                scrollTo={scrollTo}
-                current={current}
-                setCurrent={(tab) => {
-                    scrollTo(tab);
-                }}
-            />
+            <Tabs scrollTo={scrollTo} current={current} setCurrent={scrollTo} />
             <div
-                onScroll={(e) => {
-                    [bunsRef, saucesRef, mainsRef].forEach((section) => {
-                        const sectionTop = section.current.offsetTop;
-                        if (e.target.scrollTop >= sectionTop - 324) {
-                            console.log(section.current.textContent);
-                            setCurrent(section.current.textContent);
-                        }
-                    });
-                }}
+                onScroll={handlerScroll}
                 className={`custom-scroll mt-10 ${styles.ingridientsContainer}`}
             >
                 <h2 ref={bunsRef} className="text text_type_main-medium">

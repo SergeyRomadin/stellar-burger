@@ -31,25 +31,7 @@ function BurgerComponents({ handleModalOpen }) {
         };
     }, [ingridients]);
 
-    // const buns = useMemo(
-    //     () =>
-    //         ingridients.filter((item) => item.type === "bun" && item.count > 0),
-    //     [ingridients]
-    // );
-    // const mains = useMemo(() => {
-    //     const filteredMains = ingridients.filter(
-    //         (item) => item.type !== "bun" && item.count > 0
-    //     );
-    //     return filteredMains.map((ing) => {
-    //         let result = [];
-    //         for (let i = 0; i < ing.count; i++) {
-    //             result.push(ing);
-    //         }
-    //         return result;
-    //     });
-    // }, [ingridients]);
-
-    const order = useMemo(() => {
+    const makeOrder = () => {
         let itemsList = [];
 
         if (mains && bun) {
@@ -63,10 +45,16 @@ function BurgerComponents({ handleModalOpen }) {
 
         itemsList.push(bun);
 
-        const idList = itemsList.map((ing) => ing?._id);
+        const order = itemsList.map((ing) => ing?._id);
 
-        return idList;
-    }, [mains, bun]);
+        postOrder(JSON.stringify({ ingredients: order }))
+            .then((res) =>
+                handleModalOpen(
+                    <OrderDetails name={res.name} orderNum={res.order.number} />
+                )
+            )
+            .catch((err) => console.log(err));
+    };
 
     return (
         <div className={`${styles.wrapper} pt-25 pl-10`}>
@@ -143,19 +131,7 @@ function BurgerComponents({ handleModalOpen }) {
                     htmlType="button"
                     type="primary"
                     size="large"
-                    onClick={() => {
-                        // console.log(JSON.stringify({ ingredients: order }));
-                        postOrder(JSON.stringify({ ingredients: order }))
-                            .then((res) =>
-                                handleModalOpen(
-                                    <OrderDetails
-                                        name={res.name}
-                                        orderNum={res.order.number}
-                                    />
-                                )
-                            )
-                            .catch((err) => console.log(err));
-                    }}
+                    onClick={makeOrder}
                 >
                     Оформить заказ
                 </Button>
