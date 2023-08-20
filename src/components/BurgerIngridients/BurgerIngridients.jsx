@@ -71,7 +71,6 @@ function BurgerIngridients({ handleModalOpen }) {
         [bunsRef, saucesRef, mainsRef].forEach((section) => {
             const sectionTop = section.current.offsetTop;
             if (e.target.scrollTop >= sectionTop - 324) {
-                console.log(section.current.textContent);
                 setCurrent(section.current.textContent);
             }
         });
