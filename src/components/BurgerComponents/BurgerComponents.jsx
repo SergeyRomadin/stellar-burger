@@ -6,13 +6,19 @@ import {
     DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import { memo, useContext, useMemo } from "react";
+import { memo, useMemo } from "react";
 import OrderDetails from "../OrderInfo/OrderDetails";
-import { IngridientsContext } from "../../services/context/ingridientsContext";
 import { postOrder } from "../../services/api";
+import { useSelector, useDispatch } from "react-redux";
+import {
+    ingredientsSelector,
+    remove,
+} from "../../services/rtk/igredientsSlice/ingredientsSlice";
 
 function BurgerComponents({ handleModalOpen }) {
-    const [ingridients, dispatchIngridients] = useContext(IngridientsContext);
+    const ingridients = useSelector(ingredientsSelector);
+    const dispatch = useDispatch();
+
     const { bun, mains } = useMemo(() => {
         return {
             bun:
@@ -88,10 +94,7 @@ function BurgerComponents({ handleModalOpen }) {
                                     price={ingridient.price}
                                     thumbnail={ingridient["image_mobile"]}
                                     handleClose={() =>
-                                        dispatchIngridients({
-                                            type: "REMOVE",
-                                            payload: ingridient,
-                                        })
+                                        dispatch(remove(ingridient))
                                     }
                                 />
                             </li>

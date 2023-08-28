@@ -5,50 +5,25 @@ import BurgerIngridients from "../BurgerIngridients/BurgerIngridients";
 import BurgerComponents from "../BurgerComponents/BurgerComponents";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import Modal from "../Modal/Modal";
-import { IngridientsContext } from "../../services/context/ingridientsContext";
-
-const ingridientsReducer = (state, { type, payload }) => {
-    switch (type) {
-        case "INIT_INGRIDIENTS":
-            return payload;
-        case "ADD":
-            return state.map((item) => {
-                if (payload.type === "bun") {
-                    if (item !== payload && item.type === "bun")
-                        return { ...item, count: 0 };
-                }
-                return item === payload
-                    ? { ...item, count: item.count + 1 }
-                    : item;
-            });
-        case "REMOVE":
-            return state.map((item) => {
-                return item === payload
-                    ? { ...item, count: item.count - 1 }
-                    : item;
-            });
-        default:
-            throw new Error(`Wrong type of action: ${type}`);
-    }
-};
+import { useDispatch } from "react-redux";
+import { initIngredients } from "../../services/rtk/igredientsSlice/ingredientsSlice";
 
 function App() {
-    const ingridients = useReducer(ingridientsReducer, []);
-    // eslint-disable-next-line
-    const [ingridientsState, dispatchIngridients] = ingridients;
+    const dispatch = useDispatch();
 
     const [isModalActive, setModalActive] = useState(false);
     const [modalContent, setModalContent] = useState();
 
     useEffect(() => {
         getIngridients().then((data) => {
-            dispatchIngridients({
-                type: "INIT_INGRIDIENTS",
-                payload: data.data.map((el) => {
-                    el.count = 0;
-                    return el;
-                }),
-            });
+            dispatch(
+                initIngredients(
+                    data.data.map((el) => {
+                        el.count = 0;
+                        return el;
+                    })
+                )
+            );
         });
         // eslint-disable-next-line
     }, []);
@@ -65,10 +40,8 @@ function App() {
         <div className={styles.app}>
             <AppHeader />
             <main className="content-wrapper">
-                <IngridientsContext.Provider value={ingridients}>
-                    <BurgerIngridients handleModalOpen={handleModalOpen} />
-                    <BurgerComponents handleModalOpen={handleModalOpen} />
-                </IngridientsContext.Provider>
+                <BurgerIngridients handleModalOpen={handleModalOpen} />
+                <BurgerComponents handleModalOpen={handleModalOpen} />
                 {isModalActive && (
                     <Modal title="some modal title" onClose={handleModalClose}>
                         {modalContent}

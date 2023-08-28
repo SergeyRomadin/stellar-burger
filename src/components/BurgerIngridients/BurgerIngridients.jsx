@@ -1,20 +1,21 @@
 import styles from "./BurgerIngridients.module.css";
 import { Tabs } from "../Tabs";
 import PropTypes from "prop-types";
-import {
-    memo,
-    useCallback,
-    useContext,
-    useMemo,
-    useRef,
-    useState,
-} from "react";
-import { IngridientsContext } from "../../services/context/ingridientsContext";
+import { memo, useCallback, useMemo, useRef, useState } from "react";
 import IngridientItem from "../IngridientItem/IngridientItem";
+import { useSelector, useDispatch } from "react-redux";
+import {
+    add,
+    ingredientsSelector,
+} from "../../services/rtk/igredientsSlice/ingredientsSlice";
 
 function BurgerIngridients({ handleModalOpen }) {
     const [current, setCurrent] = useState("Булки");
-    const [ingridients, dispatchIngridients] = useContext(IngridientsContext);
+    const ingridients = useSelector(ingredientsSelector);
+
+    console.log(ingridients);
+
+    const dispatch = useDispatch();
 
     const bunsRef = useRef(null);
     const saucesRef = useRef(null);
@@ -35,7 +36,7 @@ function BurgerIngridients({ handleModalOpen }) {
 
     const hanleAddIngridient = (item) => {
         if (item.type === "bun" && item.count > 0) return;
-        return dispatchIngridients({ type: "ADD", payload: item });
+        return dispatch(add(item));
     };
 
     const renderItems = (items, handleClick) =>
