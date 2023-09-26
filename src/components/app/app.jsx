@@ -7,6 +7,8 @@ import { useCallback, useEffect, useReducer, useState } from "react";
 import Modal from "../Modal/Modal";
 import { useDispatch } from "react-redux";
 import { initIngredients } from "../../services/rtk/igredientsSlice/ingredientsSlice";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
     const dispatch = useDispatch();
@@ -40,13 +42,18 @@ function App() {
         <div className={styles.app}>
             <AppHeader />
             <main className="content-wrapper">
-                <BurgerIngridients handleModalOpen={handleModalOpen} />
-                <BurgerComponents handleModalOpen={handleModalOpen} />
-                {isModalActive && (
-                    <Modal title="some modal title" onClose={handleModalClose}>
-                        {modalContent}
-                    </Modal>
-                )}
+                <DndProvider backend={HTML5Backend}>
+                    <BurgerIngridients handleModalOpen={handleModalOpen} />
+                    <BurgerComponents handleModalOpen={handleModalOpen} />
+                    {isModalActive && (
+                        <Modal
+                            title="some modal title"
+                            onClose={handleModalClose}
+                        >
+                            {modalContent}
+                        </Modal>
+                    )}
+                </DndProvider>
             </main>
         </div>
     );

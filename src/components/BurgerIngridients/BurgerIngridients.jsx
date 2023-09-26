@@ -8,6 +8,8 @@ import {
     add,
     ingredientsSelector,
 } from "../../services/rtk/igredientsSlice/ingredientsSlice";
+import { DndProvider, useDrag } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function BurgerIngridients({ handleModalOpen }) {
     const [current, setCurrent] = useState("Булки");
@@ -40,17 +42,19 @@ function BurgerIngridients({ handleModalOpen }) {
     };
 
     const renderItems = (items, handleClick) =>
-        items.map((item, i) => (
-            <IngridientItem
-                count={item.count || null}
-                key={item._id + i}
-                item={item}
-                onClick={
-                    () => handleClick(item)
-                    // handleClick(<IngridientDetails ingridient={item} />)
-                }
-            />
-        ));
+        items.map((item, i) => {
+            return (
+                <IngridientItem
+                    count={item.count || null}
+                    key={item._id + i}
+                    item={item}
+                    onClick={
+                        () => handleClick(item)
+                        // handleClick(<IngridientDetails ingridient={item} />)
+                    }
+                />
+            );
+        });
 
     const scrollTo = useCallback((tab) => {
         switch (tab) {
@@ -81,6 +85,7 @@ function BurgerIngridients({ handleModalOpen }) {
         <div className={styles.wrapper}>
             <h1 className="text text_type_main-large pt-10">Соберите бургер</h1>
             <Tabs scrollTo={scrollTo} current={current} setCurrent={scrollTo} />
+
             <div
                 onScroll={handlerScroll}
                 className={`custom-scroll mt-10 ${styles.ingridientsContainer}`}

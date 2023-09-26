@@ -11,13 +11,26 @@ import OrderDetails from "../OrderInfo/OrderDetails";
 import { postOrder } from "../../services/api";
 import { useSelector, useDispatch } from "react-redux";
 import {
+    add,
     ingredientsSelector,
     remove,
 } from "../../services/rtk/igredientsSlice/ingredientsSlice";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider, useDrop } from "react-dnd";
 
 function BurgerComponents({ handleModalOpen }) {
     const ingridients = useSelector(ingredientsSelector);
     const dispatch = useDispatch();
+    const [{ isHover }, drop] = useDrop({
+        accept: "ingridient",
+        collect: (monitor) => ({
+            isHover: monitor.isOver(),
+        }),
+        drop(item) {
+            if (item.type === "bun" && item.count > 0) return;
+            return dispatch(add(item));
+        },
+    });
 
     const { bun, mains } = useMemo(() => {
         return {
@@ -63,7 +76,7 @@ function BurgerComponents({ handleModalOpen }) {
     };
 
     return (
-        <div className={`${styles.wrapper} pt-25 pl-10`}>
+        <div className={`${styles.wrapper} pt-25 pl-10`} ref={drop}>
             <div className="pl-8">
                 {bun && (
                     <ConstructorElement
