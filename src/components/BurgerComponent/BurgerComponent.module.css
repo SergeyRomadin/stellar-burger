@@ -1,0 +1,17 @@
+.componentsListItem {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.translate {
+    transform: translateY(50px);
+}
+.translate {
+    transform: translateY(-50px);
+}
+
+.displayNone {
+    /* visibility: hidden; */
+    display: none;
+}

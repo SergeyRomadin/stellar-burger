@@ -16,11 +16,13 @@ import {
     remove,
 } from "../../services/rtk/igredientsSlice/ingredientsSlice";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider, useDrop } from "react-dnd";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { BurgerComponent } from "../BurgerComponent/BurgerComponent";
 
 function BurgerComponents({ handleModalOpen }) {
     const ingridients = useSelector(ingredientsSelector);
     const dispatch = useDispatch();
+
     const [{ isHover }, drop] = useDrop({
         accept: "ingridient",
         collect: (monitor) => ({
@@ -94,23 +96,7 @@ function BurgerComponents({ handleModalOpen }) {
                 <ul className={styles.componentsList}>
                     {mains.map((ing, i) => {
                         return ing.map((ingridient, i) => (
-                            <li
-                                className={`${styles.componentsListItem} pb-4`}
-                                key={ingridient._id + i}
-                            >
-                                <DragIcon type="primary" />
-                                <ConstructorElement
-                                    extraClass="ml-2"
-                                    key={ingridient._id}
-                                    isLocked={false}
-                                    text={ingridient.name}
-                                    price={ingridient.price}
-                                    thumbnail={ingridient["image_mobile"]}
-                                    handleClose={() =>
-                                        dispatch(remove(ingridient))
-                                    }
-                                />
-                            </li>
+                            <BurgerComponent ingridient={ingridient} i={i} />
                         ));
                     })}
                 </ul>

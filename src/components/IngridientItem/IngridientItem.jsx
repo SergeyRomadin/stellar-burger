@@ -15,7 +15,6 @@ function IngridientItem({ item, count, onClick }) {
         item,
         collect: (monitor) => ({
             isDrag: monitor.isDragging(),
-            isCanDrag: monitor.canDrag(),
         }),
     });
 
