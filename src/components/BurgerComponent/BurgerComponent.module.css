@@ -12,6 +12,5 @@
 }
 
 .displayNone {
-    /* visibility: hidden; */
-    display: none;
+    opacity: 0;
 }

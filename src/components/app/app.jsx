@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { initIngredients } from "../../services/rtk/igredientsSlice/ingredientsSlice";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { v4 as uuid } from "uuid";
 
 function App() {
     const dispatch = useDispatch();
@@ -21,7 +22,7 @@ function App() {
             dispatch(
                 initIngredients(
                     data.data.map((el) => {
-                        el.count = 0;
+                        el.id = uuid();
                         return el;
                     })
                 )

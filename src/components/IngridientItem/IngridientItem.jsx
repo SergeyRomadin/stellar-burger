@@ -22,7 +22,7 @@ function IngridientItem({ item, count, onClick }) {
         <ConstructorElement
             ref={dragPreview}
             extraClass="ml-2"
-            key={item._id}
+            key={item.id}
             isLocked={false}
             text={item.name}
             price={item.price}

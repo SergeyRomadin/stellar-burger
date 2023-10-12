@@ -21,7 +21,9 @@ import { BurgerComponent } from "../BurgerComponent/BurgerComponent";
 import {
     add,
     burgerComponentsSelector,
+    initIngredients,
 } from "../../services/rtk/burgerComponentsSlice/burgerComponentsSlice";
+import { v4 as uuid } from "uuid";
 
 function BurgerComponents({ handleModalOpen }) {
     const ingridients = useSelector(burgerComponentsSelector);
@@ -33,12 +35,16 @@ function BurgerComponents({ handleModalOpen }) {
             isHover: monitor.isOver(),
         }),
         drop(item) {
-            if (item.type === "bun" && item.count > 0) return;
-            return dispatch(add(item));
+            if (
+                item.type === "bun" &&
+                ingridients.find((item) => item.type === "bun")
+            )
+                return;
+            return dispatch(add({ ...item, id: uuid() }));
         },
     });
 
-    const { bun, mains } = useMemo(() => {
+    let { bun, mains } = useMemo(() => {
         return {
             bun: ingridients.find((item) => item.type === "bun") || null,
             mains: ingridients.filter((item) => item.type !== "bun") || null,
@@ -70,13 +76,21 @@ function BurgerComponents({ handleModalOpen }) {
             .catch((err) => console.log(err));
     };
 
+    const moveCards = (dragIndex, hoverIndex) => {
+        const dragCard = mains[dragIndex];
+        const newCards = [...mains];
+        newCards.splice(dragIndex, 1);
+        newCards.splice(hoverIndex, 0, dragCard);
+        dispatch(initIngredients([bun, ...newCards]));
+    };
+
     return (
         <div className={`${styles.wrapper} pt-25 pl-10`} ref={drop}>
             <div className="pl-8">
                 {bun && (
                     <ConstructorElement
                         extraClass="mb-4"
-                        key={bun._id}
+                        key={bun.id}
                         type="top"
                         isLocked={true}
                         text={`${bun.name} (верх)`}
@@ -90,9 +104,10 @@ function BurgerComponents({ handleModalOpen }) {
                     {mains.map((ing, i) => {
                         return (
                             <BurgerComponent
-                                key={ing._id + i}
+                                key={ing.id}
                                 ingridient={ing}
                                 i={i}
+                                moveCards={moveCards}
                             />
                         );
                         // return ing.map((ingridient, i) => (
@@ -104,7 +119,7 @@ function BurgerComponents({ handleModalOpen }) {
             <div className="pl-8 pt-4">
                 {bun && (
                     <ConstructorElement
-                        key={bun._id}
+                        key={bun.id}
                         type="bottom"
                         isLocked={true}
                         text={`${bun.name} (низ)`}
@@ -116,13 +131,14 @@ function BurgerComponents({ handleModalOpen }) {
             <div className={`${styles.orderContainer} pt-10`}>
                 <span className="text text_type_digits-medium pr-2">
                     {mains.reduce((prev, cur, curInd, arr) => {
-                        if (cur.count === 0) return prev;
-                        if (cur?.price) return (prev += cur.price);
-                        let acc = 0;
-                        cur.forEach((ing) => {
-                            acc += ing.count * ing.price;
-                        });
-                        return prev + acc;
+                        // if (cur.count === 0) return prev;
+                        // if (cur?.price) return (prev += cur.price);
+                        // let acc = 0;
+                        // cur.forEach((ing) => {
+                        //     acc += ing.count * ing.price;
+                        // });
+                        // return prev + acc;
+                        return prev + cur.price;
                     }, 0) + (bun && bun?.price)}
                 </span>
                 <div className={`${styles.orderIconContainer} mr-10`}>

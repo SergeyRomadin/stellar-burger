@@ -15,9 +15,9 @@ export const burgerComponentsSlice = createSlice({
     name: "burgerComponents",
     initialState,
     reducers: {
-        // initIngredients: (state, action: PayloadAction<IIngidient[]>) => {
-        //     state.burgerComponents = action.payload;
-        // },
+        initIngredients: (state, action: PayloadAction<IIngidient[]>) => {
+            state.burgerComponents = action.payload;
+        },
 
         add: (state, action: PayloadAction<IIngidient>) => {
             const { payload } = action;
@@ -39,6 +39,18 @@ export const burgerComponentsSlice = createSlice({
             console.log(state.burgerComponents);
         },
 
+        // moveCards: (
+        //     state,
+        //     action: PayloadAction<{ dragIndex: number; hoverIndex: number }>
+        // ) => {
+        //     const { dragIndex, hoverIndex } = action.payload;
+        //     const dragCard = state.burgerComponents[dragIndex];
+        //     const newCards = [...state.burgerComponents];
+        //     newCards.splice(dragIndex, 1);
+        //     newCards.splice(hoverIndex, 0, dragCard);
+        //     state.burgerComponents = newCards;
+        // },
+
         remove: (state, action: PayloadAction<IIngidient>) => {
             const { payload } = action;
             state.burgerComponents = state.burgerComponents.map((item) => {
@@ -51,8 +63,9 @@ export const burgerComponentsSlice = createSlice({
 });
 
 export const {
-    // initIngredients,
+    initIngredients,
     add,
+    // moveCards,
     remove,
 } = burgerComponentsSlice.actions;
 
