@@ -11,16 +11,20 @@ import OrderDetails from "../OrderInfo/OrderDetails";
 import { postOrder } from "../../services/api";
 import { useSelector, useDispatch } from "react-redux";
 import {
-    add,
+    // add,
     ingredientsSelector,
     remove,
 } from "../../services/rtk/igredientsSlice/ingredientsSlice";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { BurgerComponent } from "../BurgerComponent/BurgerComponent";
+import {
+    add,
+    burgerComponentsSelector,
+} from "../../services/rtk/burgerComponentsSlice/burgerComponentsSlice";
 
 function BurgerComponents({ handleModalOpen }) {
-    const ingridients = useSelector(ingredientsSelector);
+    const ingridients = useSelector(burgerComponentsSelector);
     const dispatch = useDispatch();
 
     const [{ isHover }, drop] = useDrop({
@@ -36,19 +40,8 @@ function BurgerComponents({ handleModalOpen }) {
 
     const { bun, mains } = useMemo(() => {
         return {
-            bun:
-                ingridients.find(
-                    (item) => item.type === "bun" && item.count > 0
-                ) || null,
-            mains: ingridients
-                .filter((item) => item.type !== "bun" && item.count > 0)
-                .map((ing) => {
-                    let result = [];
-                    for (let i = 0; i < ing.count; i++) {
-                        result.push(ing);
-                    }
-                    return result;
-                }),
+            bun: ingridients.find((item) => item.type === "bun") || null,
+            mains: ingridients.filter((item) => item.type !== "bun") || null,
         };
     }, [ingridients]);
 
@@ -95,9 +88,16 @@ function BurgerComponents({ handleModalOpen }) {
             <div className={`custom-scroll ${styles.ingridientsContainer}`}>
                 <ul className={styles.componentsList}>
                     {mains.map((ing, i) => {
-                        return ing.map((ingridient, i) => (
-                            <BurgerComponent ingridient={ingridient} i={i} />
-                        ));
+                        return (
+                            <BurgerComponent
+                                key={ing._id + i}
+                                ingridient={ing}
+                                i={i}
+                            />
+                        );
+                        // return ing.map((ingridient, i) => (
+                        //     <BurgerComponent ingridient={ingridient} i={i} />
+                        // ));
                     })}
                 </ul>
             </div>

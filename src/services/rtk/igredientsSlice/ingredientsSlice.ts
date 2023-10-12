@@ -33,30 +33,33 @@ export const ingredientsSlice = createSlice({
         initIngredients: (state, action: PayloadAction<IIngidient[]>) => {
             state.ingridients = action.payload;
         },
-        add: (state, action: PayloadAction<IIngidient>) => {
-            const { payload } = action;
-            state.ingridients = state.ingridients.map((item) => {
-                if (payload.type === "bun") {
-                    if (item._id !== payload._id && item.type === "bun")
-                        return { ...item, count: 0 };
-                }
-                return item._id === payload._id
-                    ? { ...item, count: item.count + 1 }
-                    : item;
-            });
-        },
-        remove: (state, action: PayloadAction<IIngidient>) => {
-            const { payload } = action;
-            state.ingridients = state.ingridients.map((item) => {
-                return item._id === payload._id
-                    ? { ...item, count: item.count - 1 }
-                    : item;
-            });
-        },
+        // add: (state, action: PayloadAction<IIngidient>) => {
+        //     const { payload } = action;
+        //     state.ingridients = state.ingridients.map((item) => {
+        //         if (payload.type === "bun") {
+        //             if (item._id !== payload._id && item.type === "bun")
+        //                 return { ...item, count: 0 };
+        //         }
+        //         return item._id === payload._id
+        //             ? { ...item, count: item.count + 1 }
+        //             : item;
+        //     });
+        // },
+        // remove: (state, action: PayloadAction<IIngidient>) => {
+        //     const { payload } = action;
+        //     state.ingridients = state.ingridients.map((item) => {
+        //         return item._id === payload._id
+        //             ? { ...item, count: item.count - 1 }
+        //             : item;
+        //     });
+        // },
     },
 });
 
-export const { initIngredients, add, remove } = ingredientsSlice.actions;
+export const {
+    initIngredients,
+    //  add, remove
+} = ingredientsSlice.actions;
 
 export const ingredientsSelector = (state: RootState) =>
     state.ingredientsSlice.ingridients;

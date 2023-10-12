@@ -5,11 +5,12 @@ import { memo, useCallback, useMemo, useRef, useState } from "react";
 import IngridientItem from "../IngridientItem/IngridientItem";
 import { useSelector, useDispatch } from "react-redux";
 import {
-    add,
+    // add,
     ingredientsSelector,
 } from "../../services/rtk/igredientsSlice/ingredientsSlice";
 import { DndProvider, useDrag } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { add } from "../../services/rtk/burgerComponentsSlice/burgerComponentsSlice";
 
 function BurgerIngridients({ handleModalOpen }) {
     const [current, setCurrent] = useState("Булки");

@@ -15,21 +15,30 @@ export const burgerComponentsSlice = createSlice({
     name: "burgerComponents",
     initialState,
     reducers: {
-        initIngredients: (state, action: PayloadAction<IIngidient[]>) => {
-            state.burgerComponents = action.payload;
-        },
+        // initIngredients: (state, action: PayloadAction<IIngidient[]>) => {
+        //     state.burgerComponents = action.payload;
+        // },
+
         add: (state, action: PayloadAction<IIngidient>) => {
             const { payload } = action;
-            state.burgerComponents = state.burgerComponents.map((item) => {
-                if (payload.type === "bun") {
+            const hasBun = state.burgerComponents.find(
+                (el) => el.type === "bun"
+            );
+            console.log(hasBun);
+            if (payload.type === "bun" && hasBun) {
+                state.burgerComponents = state.burgerComponents.map((item) => {
                     if (item._id !== payload._id && item.type === "bun")
-                        return { ...item, count: 0 };
-                }
-                return item._id === payload._id
-                    ? { ...item, count: item.count + 1 }
-                    : item;
-            });
+                        return payload;
+                    return item;
+                });
+            }
+            if (payload.type !== "bun" || !hasBun) {
+                state.burgerComponents = [...state.burgerComponents, payload];
+            }
+
+            console.log(state.burgerComponents);
         },
+
         remove: (state, action: PayloadAction<IIngidient>) => {
             const { payload } = action;
             state.burgerComponents = state.burgerComponents.map((item) => {
@@ -41,7 +50,11 @@ export const burgerComponentsSlice = createSlice({
     },
 });
 
-export const { initIngredients, add, remove } = burgerComponentsSlice.actions;
+export const {
+    // initIngredients,
+    add,
+    remove,
+} = burgerComponentsSlice.actions;
 
 export const burgerComponentsSelector = (state: RootState) =>
     state.burgerComponentsSlice.burgerComponents;
