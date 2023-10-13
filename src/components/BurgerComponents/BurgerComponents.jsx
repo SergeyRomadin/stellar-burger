@@ -77,8 +77,6 @@ function BurgerComponents({ handleModalOpen }) {
         dispatch(initIngredients(bun ? [bun, ...newCards] : [...newCards]));
     };
 
-    console.log(ingridients);
-
     return (
         <div className={`${styles.wrapper} pt-25 pl-10`} ref={drop}>
             <div className="pl-8">
