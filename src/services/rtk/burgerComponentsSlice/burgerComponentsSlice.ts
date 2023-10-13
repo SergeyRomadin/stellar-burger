@@ -24,7 +24,6 @@ export const burgerComponentsSlice = createSlice({
             const hasBun = state.burgerComponents.find(
                 (el) => el.type === "bun"
             );
-            console.log(hasBun);
             if (payload.type === "bun" && hasBun) {
                 state.burgerComponents = state.burgerComponents.map((item) => {
                     if (item._id !== payload._id && item.type === "bun")
@@ -35,8 +34,6 @@ export const burgerComponentsSlice = createSlice({
             if (payload.type !== "bun" || !hasBun) {
                 state.burgerComponents = [...state.burgerComponents, payload];
             }
-
-            console.log(state.burgerComponents);
         },
 
         remove: (state, action: PayloadAction<IIngidient>) => {

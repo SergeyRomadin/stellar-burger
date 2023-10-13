@@ -45,19 +45,9 @@ function BurgerComponents({ handleModalOpen }) {
     }, [ingridients]);
 
     const makeOrder = () => {
-        let itemsList = [];
+        let itemsList = [bun, ...mains, bun];
 
-        if (mains && bun) {
-            itemsList = mains?.reduce(
-                (acc, ing) => {
-                    return [...acc, ...ing];
-                },
-                [bun]
-            );
-        }
-
-        itemsList.push(bun);
-
+        console.log(itemsList);
         const order = itemsList.map((ing) => ing?._id);
 
         postOrder(JSON.stringify({ ingredients: order }))
