@@ -2,7 +2,7 @@ import doneImg from "../../img/done.png";
 import styles from "./OrderDetails.module.css";
 import PropTypes from "prop-types";
 
-function OrderDetails({ name, orderNum }) {
+function OrderDetails({ orderNum }) {
     return (
         <section className={styles.wrapper}>
             <p className={`${styles.digits} text text_type_digits-large pt-30`}>
@@ -23,7 +23,6 @@ function OrderDetails({ name, orderNum }) {
 }
 
 OrderDetails.propTypes = {
-    name: PropTypes.string,
     orderNum: PropTypes.number,
 };
 

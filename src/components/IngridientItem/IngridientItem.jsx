@@ -1,5 +1,4 @@
 import {
-    ConstructorElement,
     Counter,
     CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -10,26 +9,10 @@ import { memo } from "react";
 import { useDrag } from "react-dnd";
 
 function IngridientItem({ item, count, onClick }) {
-    const [{ isDrag }, drag, dragPreview] = useDrag({
+    const [_, drag] = useDrag({
         type: "ingridient",
         item,
-        collect: (monitor) => ({
-            isDrag: monitor.isDragging(),
-        }),
     });
-
-    const draggableAnimal = (
-        <ConstructorElement
-            ref={dragPreview}
-            extraClass="ml-2"
-            key={item.id}
-            isLocked={false}
-            text={item.name}
-            price={item.price}
-            thumbnail={item["image_mobile"]}
-            handleClose={() => {}}
-        />
-    );
 
     return (
         <li onClick={onClick} className={styles.listItem} ref={drag}>
@@ -51,7 +34,7 @@ function IngridientItem({ item, count, onClick }) {
 }
 
 IngridientItem.propTypes = {
-    item: ingridientPropType.isRequired,
+    item: ingridientPropType,
     count: PropTypes.number,
     onClick: PropTypes.func,
 };

@@ -3,6 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 export interface IIngidient {
+    id: string;
     _id: string;
     name: string;
     type: "bun" | "main" | "sauce";
@@ -15,7 +16,6 @@ export interface IIngidient {
     image_mobile: string;
     image_large: string;
     __v: number;
-    count: number;
 }
 
 export interface IIngredientsState {

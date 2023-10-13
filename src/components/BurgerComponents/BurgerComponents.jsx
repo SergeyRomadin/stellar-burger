@@ -3,20 +3,13 @@ import {
     Button,
     ConstructorElement,
     CurrencyIcon,
-    DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import OrderDetails from "../OrderInfo/OrderDetails";
 import { postOrder } from "../../services/api";
 import { useSelector, useDispatch } from "react-redux";
-import {
-    // add,
-    ingredientsSelector,
-    remove,
-} from "../../services/rtk/igredientsSlice/ingredientsSlice";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { useDrop } from "react-dnd";
 import { BurgerComponent } from "../BurgerComponent/BurgerComponent";
 import {
     add,
@@ -81,8 +74,10 @@ function BurgerComponents({ handleModalOpen }) {
         const newCards = [...mains];
         newCards.splice(dragIndex, 1);
         newCards.splice(hoverIndex, 0, dragCard);
-        dispatch(initIngredients([bun, ...newCards]));
+        dispatch(initIngredients(bun ? [bun, ...newCards] : [...newCards]));
     };
+
+    console.log(ingridients);
 
     return (
         <div className={`${styles.wrapper} pt-25 pl-10`} ref={drop}>
@@ -110,9 +105,6 @@ function BurgerComponents({ handleModalOpen }) {
                                 moveCards={moveCards}
                             />
                         );
-                        // return ing.map((ingridient, i) => (
-                        //     <BurgerComponent ingridient={ingridient} i={i} />
-                        // ));
                     })}
                 </ul>
             </div>
@@ -131,15 +123,8 @@ function BurgerComponents({ handleModalOpen }) {
             <div className={`${styles.orderContainer} pt-10`}>
                 <span className="text text_type_digits-medium pr-2">
                     {mains.reduce((prev, cur, curInd, arr) => {
-                        // if (cur.count === 0) return prev;
-                        // if (cur?.price) return (prev += cur.price);
-                        // let acc = 0;
-                        // cur.forEach((ing) => {
-                        //     acc += ing.count * ing.price;
-                        // });
-                        // return prev + acc;
                         return prev + cur.price;
-                    }, 0) + (bun && bun?.price)}
+                    }, 0) + (bun && bun?.price * 2)}
                 </span>
                 <div className={`${styles.orderIconContainer} mr-10`}>
                     <CurrencyIcon type="primary" />

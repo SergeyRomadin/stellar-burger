@@ -3,7 +3,7 @@ import { getIngridients } from "../../services/api";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngridients from "../BurgerIngridients/BurgerIngridients";
 import BurgerComponents from "../BurgerComponents/BurgerComponents";
-import { useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Modal from "../Modal/Modal";
 import { useDispatch } from "react-redux";
 import { initIngredients } from "../../services/rtk/igredientsSlice/ingredientsSlice";

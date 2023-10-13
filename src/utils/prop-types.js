@@ -5,6 +5,7 @@ export const ingridientPropType = PropTypes.shape({
     name: PropTypes.string,
     type: PropTypes.string,
     proteins: PropTypes.number,
+    id: PropTypes.string,
     fat: PropTypes.number,
     carbohydrates: PropTypes.number,
     calories: PropTypes.number,
@@ -12,5 +13,4 @@ export const ingridientPropType = PropTypes.shape({
     image: PropTypes.string,
     image_mobile: PropTypes.string,
     image_large: PropTypes.string,
-    count: PropTypes.number,
 });

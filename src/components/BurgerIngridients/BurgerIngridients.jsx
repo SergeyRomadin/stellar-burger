@@ -3,22 +3,13 @@ import { Tabs } from "../Tabs";
 import PropTypes from "prop-types";
 import { memo, useCallback, useMemo, useRef, useState } from "react";
 import IngridientItem from "../IngridientItem/IngridientItem";
-import { useSelector, useDispatch } from "react-redux";
-import {
-    // add,
-    ingredientsSelector,
-} from "../../services/rtk/igredientsSlice/ingredientsSlice";
-import { DndProvider, useDrag } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { add } from "../../services/rtk/burgerComponentsSlice/burgerComponentsSlice";
+import { useSelector } from "react-redux";
+import { ingredientsSelector } from "../../services/rtk/igredientsSlice/ingredientsSlice";
+import IngridientDetails from "../IngridientDetails/IngridientDetails";
 
 function BurgerIngridients({ handleModalOpen }) {
     const [current, setCurrent] = useState("Булки");
     const ingridients = useSelector(ingredientsSelector);
-
-    console.log(ingridients);
-
-    const dispatch = useDispatch();
 
     const bunsRef = useRef(null);
     const saucesRef = useRef(null);
@@ -37,21 +28,17 @@ function BurgerIngridients({ handleModalOpen }) {
         [ingridients]
     );
 
-    const hanleAddIngridient = (item) => {
-        if (item.type === "bun" && item.count > 0) return;
-        return dispatch(add(item));
-    };
-
     const renderItems = (items, handleClick) =>
         items.map((item, i) => {
             return (
                 <IngridientItem
                     count={item.count || null}
-                    key={item._id + i}
+                    key={item.id}
                     item={item}
                     onClick={
-                        () => handleClick(item)
-                        // handleClick(<IngridientDetails ingridient={item} />)
+                        () =>
+                            handleClick(<IngridientDetails ingridient={item} />)
+                        // handleClick(item)
                     }
                 />
             );
@@ -95,7 +82,7 @@ function BurgerIngridients({ handleModalOpen }) {
                     Булки
                 </h2>
                 <ul className={`${styles.ingridientsList} pl-4`}>
-                    {renderItems(buns, hanleAddIngridient)}
+                    {renderItems(buns, handleModalOpen)}
                 </ul>
                 <h2
                     ref={saucesRef}
@@ -104,13 +91,13 @@ function BurgerIngridients({ handleModalOpen }) {
                     Соусы
                 </h2>
                 <ul className={`${styles.ingridientsList} pl-4`}>
-                    {renderItems(sauces, hanleAddIngridient)}
+                    {renderItems(sauces, handleModalOpen)}
                 </ul>
                 <h2 ref={mainsRef} className="text text_type_main-medium pt-10">
                     Начинки
                 </h2>
                 <ul className={`${styles.ingridientsList} pl-4`}>
-                    {renderItems(mains, hanleAddIngridient)}
+                    {renderItems(mains, handleModalOpen)}
                 </ul>
             </div>
         </div>
