@@ -53,6 +53,7 @@ function BurgerComponents({ handleModalOpen }) {
 
         postOrder({ ingredients: order })
             .then((res) => {
+                dispatch(initIngredients([]));
                 return handleModalOpen(
                     <OrderDetails
                         name={res?.data.name}
@@ -122,6 +123,7 @@ function BurgerComponents({ handleModalOpen }) {
                     <CurrencyIcon type="primary" />
                 </div>
                 <Button
+                    disabled={!bun}
                     extraClass="mr-4"
                     htmlType="button"
                     type="primary"
