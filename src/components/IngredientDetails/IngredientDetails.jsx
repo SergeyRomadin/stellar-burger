@@ -1,7 +1,7 @@
-import styles from "./IngridientDetails.module.css";
-import { ingridientPropType } from "../../utils/prop-types";
+import styles from "./IngredientDetails.module.css";
+import { ingredientPropType } from "../../utils/prop-types";
 
-function IngridientDetails({ ingridient }) {
+function IngredientDetails({ ingredient }) {
     return (
         <section className={styles.wrapper}>
             <div className={`${styles.title} pt-10`}>
@@ -10,13 +10,13 @@ function IngridientDetails({ ingridient }) {
                 </h2>
             </div>
             <img
-                src={ingridient.image}
-                alt={ingridient.name}
+                src={ingredient.image}
+                alt={ingredient.name}
                 className={`${styles.img}`}
             />
             <div>
                 <h3 className="text text_type_main-medium pt-4 pl-15 pr-15">
-                    {ingridient.name}
+                    {ingredient.name}
                 </h3>
                 <ul className={`${styles.nutrientsList} pl-15 pr-15`}>
                     <li className={`${styles.nutrient}`}>
@@ -24,7 +24,7 @@ function IngridientDetails({ ingridient }) {
                             Калории,ккал
                         </span>
                         <span className="text text_type_digits-default text_color_inactive pt-2">
-                            {ingridient.calories}
+                            {ingredient.calories}
                         </span>
                     </li>
                     <li className={styles.nutrient}>
@@ -32,7 +32,7 @@ function IngridientDetails({ ingridient }) {
                             Белки, г
                         </span>
                         <span className="text text_type_digits-default text_color_inactive pt-2">
-                            {ingridient.proteins}
+                            {ingredient.proteins}
                         </span>
                     </li>
                     <li className={styles.nutrient}>
@@ -40,7 +40,7 @@ function IngridientDetails({ ingridient }) {
                             Жиры, г
                         </span>
                         <span className="text text_type_digits-default text_color_inactive pt-2">
-                            {ingridient.carbohydrates}
+                            {ingredient.carbohydrates}
                         </span>
                     </li>
                     <li className={styles.nutrient}>
@@ -48,7 +48,7 @@ function IngridientDetails({ ingridient }) {
                             Углеводы, г
                         </span>
                         <span className="text text_type_digits-default text_color_inactive pt-2">
-                            {ingridient.calories}
+                            {ingredient.calories}
                         </span>
                     </li>
                 </ul>
@@ -57,8 +57,8 @@ function IngridientDetails({ ingridient }) {
     );
 }
 
-IngridientDetails.propTypes = {
-    ingridient: ingridientPropType.isRequired,
+IngredientDetails.propTypes = {
+    ingredient: ingredientPropType.isRequired,
 };
 
-export default IngridientDetails;
+export default IngredientDetails;

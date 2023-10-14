@@ -2,14 +2,20 @@ import {
     Counter,
     CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./IngridientItem.module.css";
+import styles from "./IngredientItem.module.css";
 import PropTypes from "prop-types";
-import { ingridientPropType } from "../../utils/prop-types";
+import { ingredientPropType } from "../../utils/prop-types";
 import { memo } from "react";
+import { useDrag } from "react-dnd";
 
-function IngridientItem({ item, count, onClick }) {
+function IngredientItem({ item, count, onClick }) {
+    const [_, drag] = useDrag({
+        type: "ingredient",
+        item,
+    });
+
     return (
-        <li onClick={onClick} className={styles.listItem}>
+        <li onClick={onClick} className={styles.listItem} ref={drag}>
             {count && <Counter count={count} size="default" extraClass="m-1" />}
             <img
                 className="pl-4 pr-4"
@@ -27,10 +33,10 @@ function IngridientItem({ item, count, onClick }) {
     );
 }
 
-IngridientItem.propTypes = {
-    item: ingridientPropType.isRequired,
+IngredientItem.propTypes = {
+    item: ingredientPropType,
     count: PropTypes.number,
     onClick: PropTypes.func,
 };
 
-export default memo(IngridientItem);
+export default memo(IngredientItem);
