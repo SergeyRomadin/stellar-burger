@@ -9,7 +9,7 @@ import { remove } from "../../services/rtk/burgerComponentsSlice/burgerComponent
 import { useRef } from "react";
 import PropTypes from "prop-types";
 
-const BurgerComponent = ({ ingridient, i, moveCards }) => {
+const BurgerComponent = ({ ingredient, i, moveCards }) => {
     const dispatch = useDispatch();
 
     const ref = useRef(null);
@@ -56,7 +56,7 @@ const BurgerComponent = ({ ingridient, i, moveCards }) => {
     const [{ isDragging }, drag] = useDrag({
         type: "component",
         item: () => {
-            return { id: ingridient.id, index: i };
+            return { id: ingredient.id, index: i };
         },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
@@ -76,10 +76,10 @@ const BurgerComponent = ({ ingridient, i, moveCards }) => {
             <ConstructorElement
                 extraClass="ml-2"
                 isLocked={false}
-                text={ingridient.name}
-                price={ingridient.price}
-                thumbnail={ingridient["image_mobile"]}
-                handleClose={() => dispatch(remove(ingridient))}
+                text={ingredient.name}
+                price={ingredient.price}
+                thumbnail={ingredient["image_mobile"]}
+                handleClose={() => dispatch(remove(ingredient))}
             />
         </li>
     );
@@ -88,7 +88,7 @@ const BurgerComponent = ({ ingridient, i, moveCards }) => {
 BurgerComponent.propTypes = {
     moveCards: PropTypes.func,
     i: PropTypes.number,
-    ingridient: PropTypes.object,
+    ingredient: PropTypes.object,
 };
 
 export { BurgerComponent };

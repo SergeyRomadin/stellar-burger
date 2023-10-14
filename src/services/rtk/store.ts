@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import ingredientsReducer from "./igredientsSlice/ingredientsSlice";
 import burgerComponentsReducer from "./burgerComponentsSlice/burgerComponentsSlice";
+import { stellarApi } from "./rtkQuerry/stellarApi";
 
 export const store = configureStore({
     reducer: {
-        ingredientsSlice: ingredientsReducer,
         burgerComponentsSlice: burgerComponentsReducer,
+        [stellarApi.reducerPath]: stellarApi.reducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(stellarApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

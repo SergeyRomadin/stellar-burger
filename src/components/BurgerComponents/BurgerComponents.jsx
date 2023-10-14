@@ -7,7 +7,7 @@ import {
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import OrderDetails from "../OrderInfo/OrderDetails";
-import { postOrder } from "../../services/api";
+// import { postOrder } from "../../services/api";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import { BurgerComponent } from "../BurgerComponent/BurgerComponent";
@@ -17,20 +17,22 @@ import {
     initIngredients,
 } from "../../services/rtk/burgerComponentsSlice/burgerComponentsSlice";
 import { v4 as uuid } from "uuid";
+import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 
 function BurgerComponents({ handleModalOpen }) {
-    const ingridients = useSelector(burgerComponentsSelector);
+    const ingredients = useSelector(burgerComponentsSelector);
     const dispatch = useDispatch();
+    const [postOrder] = stellarApi.usePostOrderMutation();
 
     const [{ isHover }, drop] = useDrop({
-        accept: "ingridient",
+        accept: "ingredient",
         collect: (monitor) => ({
             isHover: monitor.isOver(),
         }),
         drop(item) {
             if (
                 item.type === "bun" &&
-                ingridients.find((item) => item.type === "bun")
+                ingredients.find((el) => el._id === item._id)
             )
                 return;
             return dispatch(add({ ...item, id: uuid() }));
@@ -39,23 +41,25 @@ function BurgerComponents({ handleModalOpen }) {
 
     let { bun, mains } = useMemo(() => {
         return {
-            bun: ingridients.find((item) => item.type === "bun") || null,
-            mains: ingridients.filter((item) => item.type !== "bun") || null,
+            bun: ingredients.find((item) => item.type === "bun") || null,
+            mains: ingredients.filter((item) => item.type !== "bun") || null,
         };
-    }, [ingridients]);
+    }, [ingredients]);
 
     const makeOrder = () => {
         let itemsList = [bun, ...mains, bun];
 
-        console.log(itemsList);
         const order = itemsList.map((ing) => ing?._id);
 
-        postOrder(JSON.stringify({ ingredients: order }))
-            .then((res) =>
-                handleModalOpen(
-                    <OrderDetails name={res.name} orderNum={res.order.number} />
-                )
-            )
+        postOrder({ ingredients: order })
+            .then((res) => {
+                return handleModalOpen(
+                    <OrderDetails
+                        name={res?.data.name}
+                        orderNum={res?.data?.order?.number}
+                    />
+                );
+            })
             .catch((err) => console.log(err));
     };
 
@@ -82,13 +86,13 @@ function BurgerComponents({ handleModalOpen }) {
                     />
                 )}
             </div>
-            <div className={`custom-scroll ${styles.ingridientsContainer}`}>
+            <div className={`custom-scroll ${styles.ingredientsContainer}`}>
                 <ul className={styles.componentsList}>
                     {mains.map((ing, i) => {
                         return (
                             <BurgerComponent
                                 key={ing.id}
-                                ingridient={ing}
+                                ingredient={ing}
                                 i={i}
                                 moveCards={moveCards}
                             />

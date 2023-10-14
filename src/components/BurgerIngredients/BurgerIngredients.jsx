@@ -1,43 +1,55 @@
-import styles from "./BurgerIngridients.module.css";
+import styles from "./BurgerIngredients.module.css";
 import { Tabs } from "../Tabs";
 import PropTypes from "prop-types";
 import { memo, useCallback, useMemo, useRef, useState } from "react";
-import IngridientItem from "../IngridientItem/IngridientItem";
+import IngredientItem from "../IngredientItem/IngredientItem";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 import { useSelector } from "react-redux";
-import { ingredientsSelector } from "../../services/rtk/igredientsSlice/ingredientsSlice";
-import IngridientDetails from "../IngridientDetails/IngridientDetails";
+import { burgerComponentsSelector } from "../../services/rtk/burgerComponentsSlice/burgerComponentsSlice";
 
-function BurgerIngridients({ handleModalOpen }) {
+function BurgerIngredients({ handleModalOpen }) {
     const [current, setCurrent] = useState("Булки");
-    const ingridients = useSelector(ingredientsSelector);
+    const burgerComponents = useSelector(burgerComponentsSelector);
+
+    const { data: ingredients } = stellarApi.useGetIngredientsQuery("");
+    // stellarApi.endpoints.getIngredients.useQueryState("");
 
     const bunsRef = useRef(null);
     const saucesRef = useRef(null);
     const mainsRef = useRef(null);
 
     const buns = useMemo(
-        () => ingridients.filter((item) => item.type === "bun"),
-        [ingridients]
+        () => ingredients?.filter((item) => item.type === "bun"),
+        [ingredients]
     );
     const mains = useMemo(
-        () => ingridients.filter((item) => item.type === "main"),
-        [ingridients]
+        () => ingredients?.filter((item) => item.type === "main"),
+        [ingredients]
     );
     const sauces = useMemo(
-        () => ingridients.filter((item) => item.type === "sauce"),
-        [ingridients]
+        () => ingredients?.filter((item) => item.type === "sauce"),
+        [ingredients]
     );
 
+    const count = (item_Id, itemType) => {
+        let count = burgerComponents.filter(
+            (item) => item._id === item_Id
+        ).length;
+        if (itemType === "bun") count *= 2;
+        return count;
+    };
+
     const renderItems = (items, handleClick) =>
-        items.map((item, i) => {
+        items?.map((item, i) => {
             return (
-                <IngridientItem
-                    count={item.count || null}
+                <IngredientItem
+                    count={count(item?._id, item?.type) || null}
                     key={item.id}
                     item={item}
                     onClick={
                         () =>
-                            handleClick(<IngridientDetails ingridient={item} />)
+                            handleClick(<IngredientDetails ingredient={item} />)
                         // handleClick(item)
                     }
                 />
@@ -76,12 +88,12 @@ function BurgerIngridients({ handleModalOpen }) {
 
             <div
                 onScroll={handlerScroll}
-                className={`custom-scroll mt-10 ${styles.ingridientsContainer}`}
+                className={`custom-scroll mt-10 ${styles.ingredientsContainer}`}
             >
                 <h2 ref={bunsRef} className="text text_type_main-medium">
                     Булки
                 </h2>
-                <ul className={`${styles.ingridientsList} pl-4`}>
+                <ul className={`${styles.ingredientsList} pl-4`}>
                     {renderItems(buns, handleModalOpen)}
                 </ul>
                 <h2
@@ -90,13 +102,13 @@ function BurgerIngridients({ handleModalOpen }) {
                 >
                     Соусы
                 </h2>
-                <ul className={`${styles.ingridientsList} pl-4`}>
+                <ul className={`${styles.ingredientsList} pl-4`}>
                     {renderItems(sauces, handleModalOpen)}
                 </ul>
                 <h2 ref={mainsRef} className="text text_type_main-medium pt-10">
                     Начинки
                 </h2>
-                <ul className={`${styles.ingridientsList} pl-4`}>
+                <ul className={`${styles.ingredientsList} pl-4`}>
                     {renderItems(mains, handleModalOpen)}
                 </ul>
             </div>
@@ -104,8 +116,8 @@ function BurgerIngridients({ handleModalOpen }) {
     );
 }
 
-BurgerIngridients.propTypes = {
+BurgerIngredients.propTypes = {
     handleModalOpen: PropTypes.func,
 };
 
-export default memo(BurgerIngridients);
+export default memo(BurgerIngredients);

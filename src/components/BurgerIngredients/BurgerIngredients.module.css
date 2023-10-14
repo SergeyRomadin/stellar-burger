@@ -1,7 +1,7 @@
 .wrapper {
     width: 600px;
 }
-.ingridientsList {
+.ingredientsList {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -9,11 +9,11 @@
     flex-wrap: wrap;
     margin: 0;
 }
-.ingridientsList > li:nth-of-type(2n) {
+.ingredientsList > li:nth-of-type(2n) {
     margin-left: 24px;
 }
 
-.ingridientsContainer {
+.ingredientsContainer {
     height: 756px;
     overflow-y: scroll;
     overflow-x: hidden;

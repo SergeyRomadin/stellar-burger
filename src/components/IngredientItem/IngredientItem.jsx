@@ -2,15 +2,15 @@ import {
     Counter,
     CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./IngridientItem.module.css";
+import styles from "./IngredientItem.module.css";
 import PropTypes from "prop-types";
-import { ingridientPropType } from "../../utils/prop-types";
+import { ingredientPropType } from "../../utils/prop-types";
 import { memo } from "react";
 import { useDrag } from "react-dnd";
 
-function IngridientItem({ item, count, onClick }) {
+function IngredientItem({ item, count, onClick }) {
     const [_, drag] = useDrag({
-        type: "ingridient",
+        type: "ingredient",
         item,
     });
 
@@ -33,10 +33,10 @@ function IngridientItem({ item, count, onClick }) {
     );
 }
 
-IngridientItem.propTypes = {
-    item: ingridientPropType,
+IngredientItem.propTypes = {
+    item: ingredientPropType,
     count: PropTypes.number,
     onClick: PropTypes.func,
 };
 
-export default memo(IngridientItem);
+export default memo(IngredientItem);

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { IIngidient } from "../igredientsSlice/ingredientsSlice";
+import { IIngidient } from "../rtkQuerry/stellarApi";
 
 export interface IIngredientsState {
     burgerComponents: IIngidient[];
