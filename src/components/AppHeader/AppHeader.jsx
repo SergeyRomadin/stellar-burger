@@ -1,3 +1,4 @@
+import { NavLink, useLocation, useNavigation } from "react-router-dom";
 import styles from "./AppHeader.module.css";
 import {
     BurgerIcon,
@@ -7,26 +8,47 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 function AppHeader() {
+    const path = useLocation().pathname;
+
     return (
         <header className={styles.appHeader}>
             <div className="content-wrapper">
                 <div className={styles.content}>
                     <ul className={styles.list}>
                         <li className={styles.listItem && "pr-10"}>
-                            <a href="#" className={styles.link}>
-                                <BurgerIcon type="primary" />
-                                <span className="text text_type_main-default pl-2">
+                            <NavLink to="/" className={styles.link}>
+                                <BurgerIcon
+                                    type={
+                                        path === "/" ? "primary" : "secondary"
+                                    }
+                                />
+                                <span
+                                    className={`text text_type_main-default pl-2 ${
+                                        path !== "/" && "text_color_inactive"
+                                    }`}
+                                >
                                     Конструктор
                                 </span>
-                            </a>
+                            </NavLink>
                         </li>
                         <li className={styles.listItem && "pr-10"}>
-                            <a href="#" className={styles.link}>
-                                <ListIcon type="secondary" />
-                                <span className="text text_type_main-default text_color_inactive pl-2">
+                            <NavLink to="/feed" className={styles.link}>
+                                <ListIcon
+                                    type={
+                                        path === "/feed"
+                                            ? "primary"
+                                            : "secondary"
+                                    }
+                                />
+                                <span
+                                    className={`text text_type_main-default pl-2 ${
+                                        path !== "/feed" &&
+                                        "text_color_inactive"
+                                    }`}
+                                >
                                     Лента заказов
                                 </span>
-                            </a>
+                            </NavLink>
                         </li>
                     </ul>
                     <div className={styles.logo}>
@@ -34,12 +56,23 @@ function AppHeader() {
                     </div>
                     <ul className={styles.list}>
                         <li className={styles.listItem}>
-                            <a href="#" className={styles.link}>
-                                <ProfileIcon type="secondary" />
-                                <span className="text text_type_main-default text_color_inactive pl-2">
+                            <NavLink to="/login" className={styles.link}>
+                                <ProfileIcon
+                                    type={
+                                        path === "/login"
+                                            ? "primary"
+                                            : "secondary"
+                                    }
+                                />
+                                <span
+                                    className={`text text_type_main-default pl-2 ${
+                                        path !== "/login" &&
+                                        "text_color_inactive"
+                                    }`}
+                                >
                                     Личный кабинет
                                 </span>
-                            </a>
+                            </NavLink>
                         </li>
                     </ul>
                 </div>

@@ -1,4 +1,3 @@
-import styles from "./app.module.css";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerComponents from "../BurgerComponents/BurgerComponents";
@@ -6,7 +5,16 @@ import { useCallback, useState } from "react";
 import Modal from "../Modal/Modal";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+// import { Routes } from "react-router";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
+import SignIn from "../Pages/Register/SignIn";
+import Register from "../Pages/Register/Register";
+import ForgotPassword from "../Pages/Register/ForgotPassword";
+import ResetPassword from "../Pages/Register/ResetPassword";
+import Profile from "../Pages/Profile/Profile";
+import Feed from "../Pages/Feed/Feed";
+import { Layout } from "./Layout";
 
 function App() {
     // const dispatch = useDispatch();
@@ -23,23 +31,47 @@ function App() {
     }, []);
 
     return (
-        <div className={styles.app}>
-            <AppHeader />
-            <main className="content-wrapper">
+        <Router>
+            <Layout>
                 <DndProvider backend={HTML5Backend}>
-                    <BurgerIngredients handleModalOpen={handleModalOpen} />
-                    <BurgerComponents handleModalOpen={handleModalOpen} />
-                    {isModalActive && (
-                        <Modal
-                            title="some modal title"
-                            onClose={handleModalClose}
-                        >
-                            {modalContent}
-                        </Modal>
-                    )}
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <>
+                                    <BurgerIngredients
+                                        handleModalOpen={handleModalOpen}
+                                    />
+                                    <BurgerComponents
+                                        handleModalOpen={handleModalOpen}
+                                    />
+                                    {isModalActive && (
+                                        <Modal
+                                            title="some modal title"
+                                            onClose={handleModalClose}
+                                        >
+                                            {modalContent}
+                                        </Modal>
+                                    )}
+                                </>
+                            }
+                        />
+                        <Route path="/login" element={<SignIn />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route
+                            path="/forgot-password"
+                            element={<ForgotPassword />}
+                        />
+                        <Route
+                            path="/reset-password"
+                            element={<ResetPassword />}
+                        />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/feed" element={<Feed />} />
+                    </Routes>
                 </DndProvider>
-            </main>
-        </div>
+            </Layout>
+        </Router>
     );
 }
 

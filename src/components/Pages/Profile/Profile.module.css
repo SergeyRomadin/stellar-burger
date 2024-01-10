@@ -1,0 +1,35 @@
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
+    width: 100%;
+    max-width: 90vw;
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 180px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 480px;
+}
+
+.sidebar {
+    max-width: 320px;
+    padding-right: 60px;
+}
+
+.sidebar li {
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+}
+
+.link {
+    color: #4c4cff;
+    padding-left: 8px;
+}

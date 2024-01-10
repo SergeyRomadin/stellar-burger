@@ -1,0 +1,58 @@
+import styles from "../Register.module.css";
+import { ingredientPropType } from "../../../utils/prop-types";
+import { useRef, useState } from "react";
+import {
+    Button,
+    Input,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Link } from "react-router-dom";
+
+function ForgotPassword() {
+    const [valueLogin, setValueLogin] = useState("");
+
+    return (
+        <section className={styles.wrapper}>
+            <h2 className={`text text_type_main-medium`}>
+                Восстановление пароля
+            </h2>
+            <Input
+                type={"text"}
+                placeholder={"Укажите e-mail"}
+                onChange={(e) => setValueLogin(e.target.value)}
+                // icon={"CurrencyIcon"}
+                value={valueLogin}
+                name={"email"}
+                error={false}
+                // onIconClick={onIconClick}
+                errorText={"Ошибка"}
+                size={"default"}
+                extraClass="ml-1 pt-6"
+            />
+            <Button
+                disabled={!valueLogin}
+                extraClass="mt-6"
+                htmlType="button"
+                type="primary"
+                size="large"
+                // onClick={makeOrder}
+            >
+                Восстановить
+            </Button>
+
+            <p
+                className={`text text_type_main-default text_color_inactive pt-20`}
+            >
+                Вспомнили пароль?
+                <Link to="/login" className={styles.link}>
+                    Войти
+                </Link>
+            </p>
+        </section>
+    );
+}
+
+ForgotPassword.propTypes = {
+    // ingredient: ingredientPropType.isRequired,
+};
+
+export default ForgotPassword;
