@@ -1,10 +1,12 @@
 import styles from "./Profile.module.css";
 import { ingredientPropType } from "../../../utils/prop-types";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     Button,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { stellarApi } from "../../../services/rtk/rtkQuerry/stellarApi";
+import { getCookie } from "../../../utils/functions";
 
 function Profile() {
     const [valueName, setValueName] = useState("");
@@ -12,6 +14,15 @@ function Profile() {
     const [valuePassword, setValuePassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const inputPasswordRef = useRef(null);
+
+    const { data: profileData } = stellarApi.useGetUserQuery(undefined);
+
+    useEffect(() => {
+        if (profileData) {
+            setValueName(profileData.user.name || "");
+            setValueLogin(profileData.user.email || "");
+        }
+    }, [profileData]);
 
     const onIconClick = () => {
         setTimeout(() => inputPasswordRef.current.focus(), 0);

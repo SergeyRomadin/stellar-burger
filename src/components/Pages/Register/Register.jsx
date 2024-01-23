@@ -6,6 +6,7 @@ import {
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
+import { stellarApi } from "../../../services/rtk/rtkQuerry/stellarApi";
 
 function Register() {
     const [valueName, setValueName] = useState("");
@@ -13,10 +14,19 @@ function Register() {
     const [valuePassword, setValuePassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const inputPasswordRef = useRef(null);
+    const [registerQuery] = stellarApi.useRegisterMutation();
 
     const onIconClick = () => {
         setTimeout(() => inputPasswordRef.current.focus(), 0);
         setShowPassword(!showPassword);
+    };
+
+    const onSubmit = () => {
+        registerQuery({
+            email: valueLogin,
+            name: valueName,
+            password: valuePassword,
+        });
     };
     return (
         <section className={styles.wrapper}>
@@ -68,7 +78,7 @@ function Register() {
                 htmlType="button"
                 type="primary"
                 size="large"
-                // onClick={makeOrder}
+                onClick={onSubmit}
             >
                 Войти
             </Button>

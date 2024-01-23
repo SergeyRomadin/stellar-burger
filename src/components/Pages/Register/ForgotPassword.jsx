@@ -5,10 +5,18 @@ import {
     Button,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { stellarApi } from "../../../services/rtk/rtkQuerry/stellarApi";
 
 function ForgotPassword() {
     const [valueLogin, setValueLogin] = useState("");
+    const [resetPasswordQuery] = stellarApi.useResetPasswordMutation();
+    const navigate = useNavigate();
+
+    const onSubmit = () => {
+        resetPasswordQuery(valueLogin);
+        navigate("/reset-password");
+    };
 
     return (
         <section className={styles.wrapper}>
@@ -34,7 +42,7 @@ function ForgotPassword() {
                 htmlType="button"
                 type="primary"
                 size="large"
-                // onClick={makeOrder}
+                onClick={onSubmit}
             >
                 Восстановить
             </Button>

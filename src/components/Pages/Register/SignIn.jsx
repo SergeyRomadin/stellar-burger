@@ -5,18 +5,30 @@ import {
     Button,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { stellarApi } from "../../../services/rtk/rtkQuerry/stellarApi";
 
 function SignIn() {
     const [valueLogin, setValueLogin] = useState("");
     const [valuePassword, setValuePassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const inputPasswordRef = useRef(null);
+    const [loginQuery] = stellarApi.useLoginMutation();
+    const navigate = useNavigate();
 
     const onIconClick = () => {
         setTimeout(() => inputPasswordRef.current.focus(), 0);
         setShowPassword(!showPassword);
     };
+
+    const onSubmit = () => {
+        loginQuery({
+            email: valueLogin,
+            password: valuePassword,
+        });
+        navigate("/");
+    };
+
     return (
         <section className={styles.wrapper}>
             <h2 className={`text text_type_main-medium`}>Вход</h2>
@@ -54,7 +66,7 @@ function SignIn() {
                 htmlType="button"
                 type="primary"
                 size="large"
-                // onClick={makeOrder}
+                onClick={onSubmit}
             >
                 Войти
             </Button>

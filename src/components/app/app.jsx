@@ -1,7 +1,7 @@
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerComponents from "../BurgerComponents/BurgerComponents";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Modal from "../Modal/Modal";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -15,6 +15,7 @@ import ResetPassword from "../Pages/Register/ResetPassword";
 import Profile from "../Pages/Profile/Profile";
 import Feed from "../Pages/Feed/Feed";
 import { Layout } from "./Layout";
+import { getCookie } from "../../utils/functions";
 
 function App() {
     // const dispatch = useDispatch();
