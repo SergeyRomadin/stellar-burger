@@ -33,3 +33,13 @@ ul {
     color: #4c4cff;
     padding-left: 8px;
 }
+
+.textBtn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.mlAuto {
+    margin-left: auto;
+}

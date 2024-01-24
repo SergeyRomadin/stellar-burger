@@ -5,7 +5,7 @@ import {
     Button,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { stellarApi } from "../../../services/rtk/rtkQuerry/stellarApi";
 
 function SignIn() {
@@ -28,6 +28,16 @@ function SignIn() {
         });
         navigate("/");
     };
+
+    const { data: auth, isFetching } = stellarApi.useGetUserQuery();
+
+    if (isFetching && !auth) {
+        return null;
+    }
+
+    if (auth) {
+        return <Navigate to="/" replace />;
+    }
 
     return (
         <section className={styles.wrapper}>

@@ -10,12 +10,11 @@ import {
     GetUserResponse,
     LoginBody,
     PostResponse,
-    RefreshTokenBody,
     RefreshTokenResponse,
     RegisterBody,
     RegisterResponse,
 } from "./stellarApiTypes";
-import { getCookie, setCookie } from "../../../utils/functions";
+import { deleteCookie, getCookie, setCookie } from "../../../utils/functions";
 
 export interface IIngidient {
     id?: string;
@@ -46,20 +45,45 @@ interface IIngredientsResponse {
 
 const stellatQuery = retry(
     async (args: string | FetchArgs, api, extraOptions) => {
+        const endpointsCondition =
+            api.endpoint !== "refreshToken" &&
+            api.endpoint !== "login" &&
+            api.endpoint !== "register" &&
+            getCookie("refreshToken");
+
+        if (!getCookie("token") && endpointsCondition) {
+            console.log("net cocki");
+            console.log(api.endpoint);
+            await api.dispatch(
+                stellarApi.endpoints.refreshToken.initiate(undefined)
+            );
+        }
+
         const result = await fetchBaseQuery({
             baseUrl: "https://norma.nomoreparties.space/api",
             prepareHeaders: (headers) => {
-                headers.set("Authorization", `${getCookie("token")}`);
+                if (getCookie("token"))
+                    headers.set("Authorization", `${getCookie("token")}`);
                 return headers;
             },
         })(args, api, extraOptions);
 
-        if (result.error?.status === 401) {
-            api.dispatch(stellarApi.endpoints.refreshToken);
+        if (result.error && !getCookie("token") && !getCookie("refreshToken"))
+            retry.fail(result.error);
+
+        if (
+            (result.error?.status === 401 || result.error?.status === 403) &&
+            endpointsCondition &&
+            getCookie("token")
+        ) {
+            await api.dispatch(
+                stellarApi.endpoints.refreshToken.initiate(undefined)
+            );
         }
+
         return result;
     },
-    { maxRetries: 5 }
+    { maxRetries: 2 }
 );
 
 export const stellarApi = createApi({
@@ -119,7 +143,9 @@ export const stellarApi = createApi({
                     const { data } = await queryFulfilled;
                     if (data.success) {
                         setCookie("refreshToken", data.refreshToken);
-                        setCookie("accessToken", data.accessToken);
+                        setCookie("token", data.accessToken, {
+                            "max-age": 1200,
+                        });
                     }
                 } catch (err) {}
             },
@@ -134,6 +160,15 @@ export const stellarApi = createApi({
                 },
                 body: JSON.stringify({ token: getCookie("refreshToken") }),
             }),
+            async onQueryStarted(body, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    if (data.success) {
+                        deleteCookie("refreshToken");
+                        deleteCookie("token");
+                    }
+                } catch (err) {}
+            },
         }),
         login: builder.mutation<RegisterResponse, LoginBody>({
             query: (body) => ({
@@ -149,14 +184,16 @@ export const stellarApi = createApi({
                     const { data } = await queryFulfilled;
                     if (data.success) {
                         setCookie("refreshToken", data.refreshToken);
-                        setCookie("token", data.accessToken);
+                        setCookie("token", data.accessToken, {
+                            "max-age": 1200,
+                        });
                     }
                 } catch (err) {}
             },
         }),
         refreshToken: builder.mutation<RefreshTokenResponse, undefined>({
             query: () => ({
-                url: `/auth/logout`,
+                url: `/auth/token`,
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json;charset=utf-8",
@@ -167,7 +204,10 @@ export const stellarApi = createApi({
                 try {
                     const { data } = await queryFulfilled;
                     if (data.success) {
-                        setCookie("token", data.accessToken);
+                        setCookie("token", data.accessToken, {
+                            "max-age": 1200,
+                        });
+                        setCookie("refreshToken", data.refreshToken);
                     }
                 } catch (err) {}
             },
@@ -180,6 +220,17 @@ export const stellarApi = createApi({
                     "Content-Type": "application/json;charset=utf-8",
                 },
                 Authorization: getCookie("token"),
+            }),
+        }),
+        patchUser: builder.mutation<GetUserResponse, RegisterBody>({
+            query: (body) => ({
+                url: `/auth/user`,
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json;charset=utf-8",
+                },
+                Authorization: getCookie("token"),
+                body: JSON.stringify(body),
             }),
         }),
     }),

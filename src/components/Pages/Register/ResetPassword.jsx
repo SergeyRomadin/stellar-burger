@@ -5,7 +5,7 @@ import {
     Button,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { stellarApi } from "../../../services/rtk/rtkQuerry/stellarApi";
 
 function ResetPassword() {
@@ -17,6 +17,7 @@ function ResetPassword() {
     const [confirmNewPasswordQuery, { data }] =
         stellarApi.useConfirmNewPassMutation();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const onSubmit = () => {
         confirmNewPasswordQuery({ password: valuePassword, token: valueCode });
@@ -25,10 +26,23 @@ function ResetPassword() {
         }
     };
 
+    // console.log(hist);
+
     const onIconClick = () => {
         setTimeout(() => inputPasswordRef.current.focus(), 0);
         setShowPassword(!showPassword);
     };
+
+    const { data: auth, isFetching } = stellarApi.useGetUserQuery();
+
+    if (isFetching && !auth) {
+        return null;
+    }
+
+    if (auth || location.state !== "forgotToReset") {
+        return <Navigate to="/" replace />;
+    }
+
     return (
         <section className={styles.wrapper}>
             <h2 className={`text text_type_main-medium`}>

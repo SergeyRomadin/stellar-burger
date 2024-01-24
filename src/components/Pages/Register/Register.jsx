@@ -5,7 +5,7 @@ import {
     Button,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { stellarApi } from "../../../services/rtk/rtkQuerry/stellarApi";
 
 function Register() {
@@ -28,6 +28,17 @@ function Register() {
             password: valuePassword,
         });
     };
+
+    const { data: auth, isFetching } = stellarApi.useGetUserQuery();
+
+    if (isFetching && !auth) {
+        return null;
+    }
+
+    if (auth) {
+        return <Navigate to="/" replace />;
+    }
+
     return (
         <section className={styles.wrapper}>
             <h2 className={`text text_type_main-medium`}>Регистрация</h2>

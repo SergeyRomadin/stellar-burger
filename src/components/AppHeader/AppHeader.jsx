@@ -65,7 +65,7 @@ function AppHeader() {
                     </div>
                     <ul className={styles.list}>
                         <li className={styles.listItem}>
-                            <NavLink to="/login" className={styles.link}>
+                            <NavLink to="/profile" className={styles.link}>
                                 {({ isActive }) => (
                                     <>
                                         <ProfileIcon

@@ -1,13 +1,10 @@
-import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerComponents from "../BurgerComponents/BurgerComponents";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import Modal from "../Modal/Modal";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-// import { Routes } from "react-router";
-import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 import SignIn from "../Pages/Register/SignIn";
 import Register from "../Pages/Register/Register";
 import ForgotPassword from "../Pages/Register/ForgotPassword";
@@ -15,7 +12,7 @@ import ResetPassword from "../Pages/Register/ResetPassword";
 import Profile from "../Pages/Profile/Profile";
 import Feed from "../Pages/Feed/Feed";
 import { Layout } from "./Layout";
-import { getCookie } from "../../utils/functions";
+import { ProtectedRouteElement } from "./ProtectedRouteElement";
 
 function App() {
     // const dispatch = useDispatch();
@@ -67,7 +64,12 @@ function App() {
                             path="/reset-password"
                             element={<ResetPassword />}
                         />
-                        <Route path="/profile" element={<Profile />} />
+                        <Route
+                            path="/profile"
+                            element={
+                                <ProtectedRouteElement element={<Profile />} />
+                            }
+                        />
                         <Route path="/feed" element={<Feed />} />
                     </Routes>
                 </DndProvider>
