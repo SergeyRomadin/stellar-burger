@@ -26,7 +26,7 @@ function AppHeader() {
                                         />
                                         <span
                                             className={`text text_type_main-default pl-2 ${
-                                                isActive &&
+                                                !isActive &&
                                                 "text_color_inactive"
                                             }`}
                                         >
@@ -49,7 +49,7 @@ function AppHeader() {
                                         />
                                         <span
                                             className={`text text_type_main-default pl-2 ${
-                                                isActive &&
+                                                !isActive &&
                                                 "text_color_inactive"
                                             }`}
                                         >
@@ -77,7 +77,7 @@ function AppHeader() {
                                         />
                                         <span
                                             className={`text text_type_main-default pl-2 ${
-                                                isActive &&
+                                                !isActive &&
                                                 "text_color_inactive"
                                             }`}
                                         >

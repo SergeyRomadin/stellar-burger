@@ -83,7 +83,7 @@ const stellatQuery = retry(
 
         return result;
     },
-    { maxRetries: 2 }
+    { maxRetries: 0 }
 );
 
 export const stellarApi = createApi({

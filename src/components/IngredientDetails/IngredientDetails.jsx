@@ -1,7 +1,24 @@
 import styles from "./IngredientDetails.module.css";
 import { ingredientPropType } from "../../utils/prop-types";
+import { burgerComponentsSelector } from "../../services/rtk/burgerComponentsSlice/burgerComponentsSlice";
+import { useLocation, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 
-function IngredientDetails({ ingredient }) {
+function IngredientDetails({}) {
+    const { data: ingredients, isFetching } =
+        stellarApi.useGetIngredientsQuery("");
+    const { id } = useParams();
+
+    console.log(id);
+    console.log(ingredients);
+
+    const ingredient = ingredients?.find((el) => {
+        return el?._id === id;
+    });
+    console.log(ingredient);
+    if (isFetching || !ingredients) return <p>loading</p>;
+
     return (
         <section className={styles.wrapper}>
             <div className={`${styles.title} pt-10`}>
@@ -10,7 +27,7 @@ function IngredientDetails({ ingredient }) {
                 </h2>
             </div>
             <img
-                src={ingredient.image}
+                src={ingredient.image_large}
                 alt={ingredient.name}
                 className={`${styles.img}`}
             />

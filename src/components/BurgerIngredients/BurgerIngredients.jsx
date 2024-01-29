@@ -7,10 +7,12 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 import { useSelector } from "react-redux";
 import { burgerComponentsSelector } from "../../services/rtk/burgerComponentsSlice/burgerComponentsSlice";
+import { useNavigate } from "react-router-dom";
 
 function BurgerIngredients({ handleModalOpen }) {
     const [current, setCurrent] = useState("Булки");
     const burgerComponents = useSelector(burgerComponentsSelector);
+    const navigate = useNavigate();
 
     const { data: ingredients } = stellarApi.useGetIngredientsQuery("");
     // stellarApi.endpoints.getIngredients.useQueryState("");
@@ -48,8 +50,13 @@ function BurgerIngredients({ handleModalOpen }) {
                     key={item.id}
                     item={item}
                     onClick={
-                        () =>
-                            handleClick(<IngredientDetails ingredient={item} />)
+                        () => {
+                            handleClick();
+                            // <IngredientDetails ingredient={item} />
+                            navigate(`/ingridients/${item._id}`, {
+                                state: { root: true },
+                            });
+                        }
                         // handleClick(item)
                     }
                 />

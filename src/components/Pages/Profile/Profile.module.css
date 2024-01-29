@@ -38,6 +38,7 @@ ul {
     background-color: transparent;
     border: none;
     cursor: pointer;
+    color: inherit;
 }
 
 .mlAuto {
