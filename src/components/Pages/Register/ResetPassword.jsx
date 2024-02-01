@@ -1,5 +1,4 @@
 import styles from "../Register.module.css";
-import { ingredientPropType } from "../../../utils/prop-types";
 import { useRef, useState } from "react";
 import {
     Button,
@@ -19,32 +18,25 @@ function ResetPassword() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+        e.preventDefault();
         confirmNewPasswordQuery({ password: valuePassword, token: valueCode });
         if (data?.success) {
             navigate("/login");
         }
     };
 
-    // console.log(hist);
-
     const onIconClick = () => {
         setTimeout(() => inputPasswordRef.current.focus(), 0);
         setShowPassword(!showPassword);
     };
 
-    const { data: auth, isFetching } = stellarApi.useGetUserQuery();
-
-    if (isFetching && !auth) {
-        return null;
-    }
-
-    if (auth || location.state !== "forgotToReset") {
+    if (location.state !== "forgotToReset") {
         return <Navigate to="/" replace />;
     }
 
     return (
-        <section className={styles.wrapper}>
+        <form onSubmit={onSubmit} className={styles.wrapper}>
             <h2 className={`text text_type_main-medium`}>
                 Восстановление пароля
             </h2>
@@ -66,11 +58,9 @@ function ResetPassword() {
                 type={"text"}
                 placeholder={"Введите код из письма"}
                 onChange={(e) => setValueCode(e.target.value)}
-                // icon={"CurrencyIcon"}
                 value={valueCode}
                 name={"code"}
                 error={false}
-                // onIconClick={onIconClick}
                 errorText={"Ошибка"}
                 size={"default"}
                 extraClass="ml-1 pt-6"
@@ -78,10 +68,9 @@ function ResetPassword() {
             <Button
                 disabled={!valueCode || !valuePassword}
                 extraClass="mt-6"
-                htmlType="button"
+                htmlType="submit"
                 type="primary"
                 size="large"
-                onClick={onSubmit}
             >
                 Восстановить
             </Button>
@@ -94,12 +83,8 @@ function ResetPassword() {
                     Войти
                 </Link>
             </p>
-        </section>
+        </form>
     );
 }
-
-ResetPassword.propTypes = {
-    // ingredient: ingredientPropType.isRequired,
-};
 
 export default ResetPassword;

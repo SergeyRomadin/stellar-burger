@@ -1,11 +1,10 @@
 import styles from "../Register.module.css";
-import { ingredientPropType } from "../../../utils/prop-types";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
     Button,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { stellarApi } from "../../../services/rtk/rtkQuerry/stellarApi";
 
 function ForgotPassword() {
@@ -13,23 +12,14 @@ function ForgotPassword() {
     const [resetPasswordQuery] = stellarApi.useResetPasswordMutation();
     const navigate = useNavigate();
 
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+        e.preventDefault();
         resetPasswordQuery(valueLogin);
         navigate("/reset-password", { state: "forgotToReset" });
     };
 
-    const { data: auth, isFetching } = stellarApi.useGetUserQuery();
-
-    if (isFetching && !auth) {
-        return null;
-    }
-
-    if (auth) {
-        return <Navigate to="/" replace />;
-    }
-
     return (
-        <section className={styles.wrapper}>
+        <form onSubmit={onSubmit} className={styles.wrapper}>
             <h2 className={`text text_type_main-medium`}>
                 Восстановление пароля
             </h2>
@@ -37,11 +27,9 @@ function ForgotPassword() {
                 type={"text"}
                 placeholder={"Укажите e-mail"}
                 onChange={(e) => setValueLogin(e.target.value)}
-                // icon={"CurrencyIcon"}
                 value={valueLogin}
                 name={"email"}
                 error={false}
-                // onIconClick={onIconClick}
                 errorText={"Ошибка"}
                 size={"default"}
                 extraClass="ml-1 pt-6"
@@ -49,10 +37,9 @@ function ForgotPassword() {
             <Button
                 disabled={!valueLogin}
                 extraClass="mt-6"
-                htmlType="button"
+                htmlType="submit"
                 type="primary"
                 size="large"
-                onClick={onSubmit}
             >
                 Восстановить
             </Button>
@@ -65,12 +52,8 @@ function ForgotPassword() {
                     Войти
                 </Link>
             </p>
-        </section>
+        </form>
     );
 }
-
-ForgotPassword.propTypes = {
-    // ingredient: ingredientPropType.isRequired,
-};
 
 export default ForgotPassword;

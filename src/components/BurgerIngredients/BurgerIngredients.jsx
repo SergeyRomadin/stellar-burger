@@ -15,7 +15,6 @@ function BurgerIngredients({ handleModalOpen }) {
     const navigate = useNavigate();
 
     const { data: ingredients } = stellarApi.useGetIngredientsQuery("");
-    // stellarApi.endpoints.getIngredients.useQueryState("");
 
     const bunsRef = useRef(null);
     const saucesRef = useRef(null);
@@ -49,16 +48,13 @@ function BurgerIngredients({ handleModalOpen }) {
                     count={count(item?._id, item?.type) || null}
                     key={item.id}
                     item={item}
-                    onClick={
-                        () => {
-                            handleClick();
-                            // <IngredientDetails ingredient={item} />
-                            navigate(`/ingridients/${item._id}`, {
-                                state: { root: true },
-                            });
-                        }
-                        // handleClick(item)
-                    }
+                    onClick={() => {
+                        handleClick();
+
+                        navigate(`/ingridients/${item._id}`, {
+                            state: { root: true },
+                        });
+                    }}
                 />
             );
         });

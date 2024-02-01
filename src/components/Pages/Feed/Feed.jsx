@@ -68,8 +68,4 @@ function Feed() {
     );
 }
 
-Feed.propTypes = {
-    // ingredient: ingredientPropType.isRequired,
-};
-
 export default Feed;

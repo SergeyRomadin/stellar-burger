@@ -1,8 +1,9 @@
 import { Outlet } from "react-router-dom";
 import BurgerIngredients from "../../BurgerIngredients/BurgerIngredients";
 import BurgerComponents from "../../BurgerComponents/BurgerComponents";
+import PropTypes from "prop-types";
 
-export const Home = ({ handleModalOpen }) => {
+const Home = ({ handleModalOpen }) => {
     return (
         <>
             <Outlet />
@@ -11,3 +12,9 @@ export const Home = ({ handleModalOpen }) => {
         </>
     );
 };
+
+Home.prototype = {
+    handleModalOpen: PropTypes.func,
+};
+
+export { Home };

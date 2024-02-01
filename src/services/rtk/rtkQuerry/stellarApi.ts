@@ -156,7 +156,6 @@ export const stellarApi = createApi({
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json;charset=utf-8",
-                    // Authorization: "Bearer " + getCookie("token"),
                 },
                 body: JSON.stringify({ token: getCookie("refreshToken") }),
             }),

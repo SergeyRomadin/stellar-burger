@@ -6,3 +6,11 @@
     color: #f2f2f3;
     align-items: center;
 }
+
+.wrapper {
+    min-height: calc(100vh - 128px);
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

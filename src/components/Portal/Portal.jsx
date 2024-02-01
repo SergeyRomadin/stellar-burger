@@ -41,8 +41,3 @@ Portal.propTypes = {
 };
 export { createContainer, PORTAL_ERROR_MSG };
 export default Portal;
-
-// type PortalProps = {
-//   id: string;
-//   children: React.ReactNode;
-// };

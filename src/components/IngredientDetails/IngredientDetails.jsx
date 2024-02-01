@@ -5,7 +5,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 
-function IngredientDetails({}) {
+function IngredientDetails() {
     const { data: ingredients, isFetching } =
         stellarApi.useGetIngredientsQuery("");
     const { id } = useParams();
@@ -73,9 +73,5 @@ function IngredientDetails({}) {
         </section>
     );
 }
-
-IngredientDetails.propTypes = {
-    ingredient: ingredientPropType.isRequired,
-};
 
 export default IngredientDetails;

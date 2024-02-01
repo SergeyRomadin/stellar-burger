@@ -1,11 +1,10 @@
 import styles from "../Register.module.css";
-import { ingredientPropType } from "../../../utils/prop-types";
 import { useRef, useState } from "react";
 import {
     Button,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { stellarApi } from "../../../services/rtk/rtkQuerry/stellarApi";
 
 function Register() {
@@ -21,7 +20,8 @@ function Register() {
         setShowPassword(!showPassword);
     };
 
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+        e.preventDefault();
         registerQuery({
             email: valueLogin,
             name: valueName,
@@ -29,29 +29,17 @@ function Register() {
         });
     };
 
-    const { data: auth, isFetching } = stellarApi.useGetUserQuery();
-
-    if (isFetching && !auth) {
-        return null;
-    }
-
-    if (auth) {
-        return <Navigate to="/" replace />;
-    }
-
     return (
-        <section className={styles.wrapper}>
+        <form onSubmit={onSubmit} className={styles.wrapper}>
             <h2 className={`text text_type_main-medium`}>Регистрация</h2>
 
             <Input
                 type={"text"}
                 placeholder={"Имя"}
                 onChange={(e) => setValueName(e.target.value)}
-                // icon={"CurrencyIcon"}
                 value={valueName}
                 name={"name"}
                 error={false}
-                // onIconClick={onIconClick}
                 errorText={"Ошибка"}
                 size={"default"}
                 extraClass="ml-1 pt-6"
@@ -60,11 +48,9 @@ function Register() {
                 type={"text"}
                 placeholder={"E-mail"}
                 onChange={(e) => setValueLogin(e.target.value)}
-                // icon={"CurrencyIcon"}
                 value={valueLogin}
                 name={"email"}
                 error={false}
-                // onIconClick={onIconClick}
                 errorText={"Ошибка"}
                 size={"default"}
                 extraClass="ml-1 pt-6"
@@ -86,10 +72,9 @@ function Register() {
             <Button
                 disabled={!valueLogin || !valuePassword || !valueName}
                 extraClass="mt-6"
-                htmlType="button"
+                htmlType="submit"
                 type="primary"
                 size="large"
-                onClick={onSubmit}
             >
                 Войти
             </Button>
@@ -102,12 +87,8 @@ function Register() {
                     Войти
                 </Link>
             </p>
-        </section>
+        </form>
     );
 }
-
-Register.propTypes = {
-    // ingredient: ingredientPropType.isRequired,
-};
 
 export default Register;

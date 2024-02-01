@@ -73,8 +73,4 @@ function Profile() {
     );
 }
 
-Profile.propTypes = {
-    // ingredient: ingredientPropType.isRequired,
-};
-
 export default Profile;

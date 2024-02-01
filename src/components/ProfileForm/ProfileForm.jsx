@@ -17,7 +17,8 @@ export const ProfileForm = () => {
     const [loginFocus, setLoginFocus] = useState(false);
     const [passwordFocus, setPasswordFocus] = useState(false);
 
-    const { data: profileData } = stellarApi.useGetUserQuery();
+    const { data: profileData, refetch: refetchUser } =
+        stellarApi.useGetUserQuery();
     const [patchUserQuery] = stellarApi.usePatchUserMutation();
 
     const isDisabledBtn =
@@ -36,7 +37,9 @@ export const ProfileForm = () => {
         if (isFocus) setFunc("");
     };
 
-    const onSubmit = () => {
+    const onSubmit = async (e) => {
+        e.preventDefault();
+
         const reqBody = Object.fromEntries(
             Object.entries({
                 name: valueName,
@@ -45,7 +48,8 @@ export const ProfileForm = () => {
                 // eslint-disable-next-line
             }).filter(([_, v]) => v && v != null && v != "")
         );
-        patchUserQuery(reqBody);
+        await patchUserQuery(reqBody);
+        refetchUser();
     };
 
     const onCancel = () => {
@@ -62,7 +66,7 @@ export const ProfileForm = () => {
     };
 
     return (
-        <div className={styles.form}>
+        <form onSubmit={onSubmit} className={styles.form}>
             <Input
                 type={"text"}
                 placeholder={"Имя"}
@@ -133,14 +137,13 @@ export const ProfileForm = () => {
                 <Button
                     disabled={isDisabledBtn}
                     extraClass="mt-6"
-                    htmlType="button"
+                    htmlType="submit"
                     type="primary"
                     size="medium"
-                    onClick={onSubmit}
                 >
                     Сохранить
                 </Button>
             </div>
-        </div>
+        </form>
     );
 };

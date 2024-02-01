@@ -72,9 +72,3 @@ Modal.propTypes = {
 };
 
 export default memo(Modal);
-
-// type Props = {
-//   title: string,
-//   onClose?: () => void,
-//   children: React.ReactNode | React.ReactNode[],
-// };

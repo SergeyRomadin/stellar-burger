@@ -21,7 +21,8 @@ function SignIn() {
         setShowPassword(!showPassword);
     };
 
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+        e.preventDefault();
         loginQuery({
             email: valueLogin,
             password: valuePassword,
@@ -29,29 +30,17 @@ function SignIn() {
         navigate("/");
     };
 
-    const { data: auth, isFetching } = stellarApi.useGetUserQuery();
-
-    if (isFetching && !auth) {
-        return null;
-    }
-
-    if (auth) {
-        return <Navigate to="/" replace />;
-    }
-
     return (
-        <section className={styles.wrapper}>
+        <form onSubmit={onSubmit} className={styles.wrapper}>
             <h2 className={`text text_type_main-medium`}>Вход</h2>
 
             <Input
                 type={"text"}
                 placeholder={"E-mail"}
                 onChange={(e) => setValueLogin(e.target.value)}
-                // icon={"CurrencyIcon"}
                 value={valueLogin}
                 name={"name"}
                 error={false}
-                // onIconClick={onIconClick}
                 errorText={"Ошибка"}
                 size={"default"}
                 extraClass="ml-1 pt-6"
@@ -73,10 +62,9 @@ function SignIn() {
             <Button
                 disabled={!valueLogin || !valuePassword}
                 extraClass="mt-6"
-                htmlType="button"
+                htmlType="submit"
                 type="primary"
                 size="large"
-                onClick={onSubmit}
             >
                 Войти
             </Button>
@@ -98,12 +86,8 @@ function SignIn() {
                     Восстановить пароль
                 </Link>
             </p>
-        </section>
+        </form>
     );
 }
-
-SignIn.propTypes = {
-    // ingredient: ingredientPropType.isRequired,
-};
 
 export default SignIn;

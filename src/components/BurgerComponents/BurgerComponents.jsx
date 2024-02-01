@@ -7,7 +7,6 @@ import {
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import OrderDetails from "../OrderInfo/OrderDetails";
-// import { postOrder } from "../../services/api";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import { BurgerComponent } from "../BurgerComponent/BurgerComponent";

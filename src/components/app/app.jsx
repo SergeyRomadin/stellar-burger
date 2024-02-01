@@ -14,6 +14,7 @@ import { ProtectedRouteElement } from "./ProtectedRouteElement";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { Home } from "../Pages/Home/Home";
 import { ProfileForm } from "../ProfileForm/ProfileForm";
+import styles from "./app.module.css";
 
 function App() {
     const [isModalActive, setModalActive] = useState(false);
@@ -40,15 +41,7 @@ function App() {
                         <Route
                             path="/ingridients/:id"
                             element={
-                                <div
-                                    style={{
-                                        minHeight: "calc(100vh - 128px)",
-                                        width: "100vw",
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                    }}
-                                >
+                                <div className={styles.wrapper}>
                                     <IngredientDetails />
                                 </div>
                             }
@@ -74,20 +67,52 @@ function App() {
                             />
                         )}
                     </Route>
-                    <Route path="/login" element={<SignIn />} />
-                    <Route path="/register" element={<Register />} />
+                    <Route
+                        path="/login"
+                        element={
+                            <ProtectedRouteElement
+                                fromAuth
+                                element={<SignIn />}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/register"
+                        element={
+                            <ProtectedRouteElement
+                                fromAuth
+                                element={<Register />}
+                            />
+                        }
+                    />
                     <Route
                         path="/forgot-password"
-                        element={<ForgotPassword />}
+                        element={
+                            <ProtectedRouteElement
+                                fromAuth
+                                element={<ForgotPassword />}
+                            />
+                        }
                     />
-                    <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route
+                        path="/reset-password"
+                        element={
+                            <ProtectedRouteElement
+                                fromAuth
+                                element={<ResetPassword />}
+                            />
+                        }
+                    />
                     <Route
                         element={
                             <ProtectedRouteElement element={<Profile />} />
                         }
                     >
                         <Route path="/profile" element={<ProfileForm />} />
-                        <Route path="/profile/orders" element={<p>asdasd</p>} />
+                        <Route
+                            path="/profile/orders"
+                            element={<p>Comming son...</p>}
+                        />
                     </Route>
                     <Route path="/feed" element={<Feed />} />
                 </Routes>
