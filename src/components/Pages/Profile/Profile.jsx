@@ -51,7 +51,6 @@ function Profile() {
                             type="button"
                             onClick={async () => {
                                 await logoutQuery();
-                                dispatch(stellarApi.util.resetApiState());
                                 setTimeout(() => navigate("/login"), 0);
                             }}
                         >

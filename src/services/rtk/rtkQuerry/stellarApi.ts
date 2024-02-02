@@ -165,8 +165,12 @@ export const stellarApi = createApi({
                     if (data.success) {
                         deleteCookie("refreshToken");
                         deleteCookie("token");
+                        dispatch(stellarApi.util.resetApiState());
+                        await dispatch(stellarApi.endpoints.getUser.initiate());
                     }
-                } catch (err) {}
+                } catch (err) {
+                } finally {
+                }
             },
         }),
         login: builder.mutation<RegisterResponse, LoginBody>({
@@ -187,7 +191,10 @@ export const stellarApi = createApi({
                             "max-age": 1200,
                         });
                     }
-                } catch (err) {}
+                } catch (err) {
+                } finally {
+                    dispatch(stellarApi.endpoints.getUser.initiate());
+                }
             },
         }),
         refreshToken: builder.mutation<RefreshTokenResponse, undefined>({
@@ -211,7 +218,7 @@ export const stellarApi = createApi({
                 } catch (err) {}
             },
         }),
-        getUser: builder.query<GetUserResponse, undefined>({
+        getUser: builder.query<GetUserResponse, void>({
             query: () => ({
                 url: `/auth/user`,
                 method: "GET",
