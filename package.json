@@ -5,6 +5,7 @@
     "homepage": "./",
     "dependencies": {
         "@reduxjs/toolkit": "^1.9.7",
+        "@types/socket.io-client": "^3.0.0",
         "@ya.praktikum/react-developer-burger-ui-components": "^1.14.0",
         "clsx": "^1.2.1",
         "prop-types": "^15.8.1",
@@ -19,6 +20,7 @@
         "redux": "^4.2.1",
         "redux-devtools-extension": "^2.13.9",
         "redux-thunk": "^2.4.2",
+        "socket.io-client": "^4.7.4",
         "uuid": "^8.3.2",
         "web-vitals": "^1.1.2"
     },

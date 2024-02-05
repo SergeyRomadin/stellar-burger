@@ -9,11 +9,31 @@ ul {
 
 .wrapper {
     width: 100%;
-    max-width: 90vw;
+    max-width: 640px;
     display: flex;
-    justify-content: flex-start;
-    padding-top: 40px;
+    flex-direction: column;
+    justify-content: center;
+    padding: 122px 122px 48px 92px;
+    padding-bottom: 64px;
     flex-wrap: wrap;
+}
+
+.ingridientsList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.textAlignCenter {
+    text-align: center;
+}
+
+.alignItemsCenter {
+    align-items: center;
+}
+
+.mlAuto {
+    margin-left: auto;
 }
 
 .container {

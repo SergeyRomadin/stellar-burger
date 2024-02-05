@@ -15,6 +15,7 @@ import {
     RegisterResponse,
 } from "./stellarApiTypes";
 import { deleteCookie, getCookie, setCookie } from "../../../utils/functions";
+import { Order } from "./websocketApi";
 
 export interface IIngidient {
     id?: string;
@@ -97,6 +98,12 @@ export const stellarApi = createApi({
                     el.id = uuid();
                     return el;
                 });
+            },
+        }),
+        getOrder: builder.query<Order, string>({
+            query: (orderId) => `/orders/${orderId}`,
+            transformResponse: (res: { orders: Order[] }) => {
+                return res.orders[0];
             },
         }),
         postOrder: builder.mutation<unknown, { ingredients: string[] }>({

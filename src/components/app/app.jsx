@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import Modal from "../Modal/Modal";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
 import SignIn from "../Pages/Register/SignIn";
 import Register from "../Pages/Register/Register";
 import ForgotPassword from "../Pages/Register/ForgotPassword";
@@ -15,15 +15,22 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { Home } from "../Pages/Home/Home";
 import { ProfileForm } from "../ProfileForm/ProfileForm";
 import styles from "./app.module.css";
+import { OredersList } from "../OrdersList/OrdersList";
+import { websocketApi } from "../../services/rtk/rtkQuerry/websocketApi";
+import { OrderInfo } from "../OrderInfo/OrderInfo";
 
 function App() {
+    const navigate = useNavigate();
     const [isModalActive, setModalActive] = useState(false);
     const [modalContent, setModalContent] = useState();
+    const { data: userOrders } = websocketApi.useGetOrdersFeedQuery();
+
     const handleModalOpen = useCallback((content) => {
         if (content) setModalContent(content);
         setModalActive(true);
     }, []);
     const handleModalClose = useCallback(() => {
+        navigate(-1);
         setModalActive(false);
         setModalContent(null);
     }, []);
@@ -43,6 +50,22 @@ function App() {
                             element={
                                 <div className={styles.wrapper}>
                                     <IngredientDetails />
+                                </div>
+                            }
+                        />
+                        <Route
+                            path="/profile/orders/:id"
+                            element={
+                                <div className={styles.wrapper}>
+                                    <OrderInfo />
+                                </div>
+                            }
+                        />
+                        <Route
+                            path="/feed/:id"
+                            element={
+                                <div className={styles.wrapper}>
+                                    <OrderInfo />
                                 </div>
                             }
                         />
@@ -111,10 +134,49 @@ function App() {
                         <Route path="/profile" element={<ProfileForm />} />
                         <Route
                             path="/profile/orders"
-                            element={<p>Comming son...</p>}
-                        />
+                            element={
+                                <ul>
+                                    <OredersList
+                                        orders={userOrders?.orders}
+                                        openModal={handleModalOpen}
+                                    />
+                                    <Outlet />
+                                </ul>
+                            }
+                        >
+                            {isModalActive && (
+                                <Route
+                                    path=":id"
+                                    element={
+                                        <Modal
+                                            title="some modal title"
+                                            onClose={handleModalClose}
+                                        >
+                                            <OrderInfo />
+                                        </Modal>
+                                    }
+                                />
+                            )}
+                        </Route>
                     </Route>
-                    <Route path="/feed" element={<Feed />} />
+                    <Route
+                        path="/feed"
+                        element={<Feed openModal={handleModalOpen} />}
+                    >
+                        {isModalActive && (
+                            <Route
+                                path=":id"
+                                element={
+                                    <Modal
+                                        title="some modal title"
+                                        onClose={handleModalClose}
+                                    >
+                                        <OrderInfo />
+                                    </Modal>
+                                }
+                            />
+                        )}
+                    </Route>
                 </Routes>
             </DndProvider>
         </Layout>

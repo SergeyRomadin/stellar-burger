@@ -6,7 +6,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
-import OrderDetails from "../OrderInfo/OrderDetails";
+import OrderDetails from "../OrderDetails/OrderDetails";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import { BurgerComponent } from "../BurgerComponent/BurgerComponent";
