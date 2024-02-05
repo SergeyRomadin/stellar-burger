@@ -4,29 +4,36 @@ import Portal, { createContainer } from "../Portal/Portal";
 
 import Styles from "./Modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useNavigate } from "react-router-dom";
 
 const MODAL_CONTAINER_ID = "modal-container-id";
 
 const Modal = ({ onClose, children }) => {
     const rootRef = useRef(null);
     const [isMounted, setMounted] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         createContainer({ id: MODAL_CONTAINER_ID });
         setMounted(true);
     }, []);
 
+    const closeModal = () => {
+        onClose?.();
+        navigate("/");
+    };
+
     useEffect(() => {
         const handleWrapperClick = (event) => {
             const { target } = event;
 
             if (target instanceof Node && rootRef.current === target) {
-                onClose?.();
+                closeModal();
             }
         };
         const handleEscapePress = (event) => {
             if (event.key === "Escape") {
-                onClose?.();
+                closeModal();
             }
         };
 
@@ -39,10 +46,6 @@ const Modal = ({ onClose, children }) => {
         };
     }, [onClose]);
 
-    const handleClose = useCallback(() => {
-        onClose?.();
-    }, [onClose]);
-
     return isMounted ? (
         <Portal id={MODAL_CONTAINER_ID}>
             <div className={Styles.wrap} ref={rootRef} data-testid="wrap">
@@ -50,7 +53,7 @@ const Modal = ({ onClose, children }) => {
                     <button
                         type="button"
                         className={`${Styles.closeButton}`}
-                        onClick={handleClose}
+                        onClick={closeModal}
                         data-testid="modal-close-button"
                     >
                         <CloseIcon type="primary" />
@@ -69,9 +72,3 @@ Modal.propTypes = {
 };
 
 export default memo(Modal);
-
-// type Props = {
-//   title: string,
-//   onClose?: () => void,
-//   children: React.ReactNode | React.ReactNode[],
-// };

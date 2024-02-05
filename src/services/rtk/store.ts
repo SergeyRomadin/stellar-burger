@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, createListenerMiddleware } from "@reduxjs/toolkit";
 import burgerComponentsReducer from "./burgerComponentsSlice/burgerComponentsSlice";
 import { stellarApi } from "./rtkQuerry/stellarApi";
 

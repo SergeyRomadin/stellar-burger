@@ -5,13 +5,16 @@ import {
 import styles from "./IngredientItem.module.css";
 import PropTypes from "prop-types";
 import { ingredientPropType } from "../../utils/prop-types";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useDrag } from "react-dnd";
 
 function IngredientItem({ item, count, onClick }) {
     const [_, drag] = useDrag({
         type: "ingredient",
         item,
+    });
+    useEffect(() => {
+        console.log("render");
     });
 
     return (

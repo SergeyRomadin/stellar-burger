@@ -7,7 +7,6 @@ import {
 import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import OrderDetails from "../OrderInfo/OrderDetails";
-// import { postOrder } from "../../services/api";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import { BurgerComponent } from "../BurgerComponent/BurgerComponent";
@@ -18,11 +17,15 @@ import {
 } from "../../services/rtk/burgerComponentsSlice/burgerComponentsSlice";
 import { v4 as uuid } from "uuid";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
+import { useNavigate } from "react-router-dom";
+import { getCookie } from "../../utils/functions";
 
 function BurgerComponents({ handleModalOpen }) {
     const ingredients = useSelector(burgerComponentsSelector);
     const dispatch = useDispatch();
     const [postOrder] = stellarApi.usePostOrderMutation();
+    const [getUserQuery, userData] = stellarApi.useLazyGetUserQuery();
+    const navigate = useNavigate();
 
     const [{ isHover }, drop] = useDrop({
         accept: "ingredient",
@@ -46,7 +49,10 @@ function BurgerComponents({ handleModalOpen }) {
         };
     }, [ingredients]);
 
-    const makeOrder = () => {
+    const makeOrder = async () => {
+        await getUserQuery();
+        if (!userData) return navigate("/login");
+
         let itemsList = [bun, ...mains, bun];
 
         const order = itemsList.map((ing) => ing?._id);
