@@ -13,7 +13,7 @@ ul {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 122px 122px 48px 92px;
+    padding: 122px 48px 48px 48px;
     padding-bottom: 64px;
     flex-wrap: wrap;
 }

@@ -1,4 +1,11 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+    MouseEvent,
+    memo,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import PropTypes from "prop-types";
 import Portal, { createContainer } from "../Portal/Portal";
 
@@ -15,8 +22,26 @@ const ModalOverlay = ({
     onClose: () => void;
     children: Element;
 }) => {
+    const rootRef = useRef(null);
+    const closeModal = (event: MouseEvent<HTMLDivElement>) => {
+        if (
+            // event &&
+            event?.target instanceof Node &&
+            rootRef.current === event?.target
+        ) {
+            console.log(rootRef.current);
+            console.log(event?.target);
+
+            onClose();
+        }
+    };
     return (
-        <div className={Styles.wrap} onClick={onClose} data-testid="wrap">
+        <div
+            ref={rootRef}
+            className={Styles.wrap}
+            onClick={closeModal}
+            data-testid="wrap"
+        >
             {children}
         </div>
     );
