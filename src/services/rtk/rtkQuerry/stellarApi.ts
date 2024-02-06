@@ -53,8 +53,6 @@ const stellatQuery = retry(
             getCookie("refreshToken");
 
         if (!getCookie("token") && endpointsCondition) {
-            console.log("net cocki");
-            console.log(api.endpoint);
             await api.dispatch(
                 stellarApi.endpoints.refreshToken.initiate(undefined)
             );

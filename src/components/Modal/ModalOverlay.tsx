@@ -29,9 +29,6 @@ const ModalOverlay = ({
             event?.target instanceof Node &&
             rootRef.current === event?.target
         ) {
-            console.log(rootRef.current);
-            console.log(event?.target);
-
             onClose();
         }
     };

@@ -13,9 +13,6 @@ function IngredientItem({ item, count, onClick }) {
         type: "ingredient",
         item,
     });
-    useEffect(() => {
-        console.log("render");
-    });
 
     return (
         <li onClick={onClick} className={styles.listItem} ref={drag}>

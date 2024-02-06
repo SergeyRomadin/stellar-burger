@@ -25,7 +25,6 @@ export const OrderInfo = () => {
 
         return { ...currIngridient, count: sameIngridients?.length };
     });
-    console.log(countedIngridients);
 
     return (
         <div className={styles.flex}>

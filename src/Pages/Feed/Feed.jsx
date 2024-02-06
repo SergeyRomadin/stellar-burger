@@ -14,8 +14,6 @@ import { Outlet } from "react-router-dom";
 function Feed({ openModal }) {
     const { data } = websocketApi.useGetOrdersQuery("/all");
 
-    console.log(data);
-
     return (
         <section className={styles.wrapper}>
             <h2 className={`text text_type_main-large pb-5 ${styles.maxWidth}`}>

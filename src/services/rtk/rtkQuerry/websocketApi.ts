@@ -59,7 +59,6 @@ export const websocketApi = createApi({
                 );
                 try {
                     const listener = (event: MessageEvent) => {
-                        console.log(event);
                         const data: OrdersResponse = JSON.parse(event.data);
                         // if (!data) return;
                         updateCachedData((draft) => {

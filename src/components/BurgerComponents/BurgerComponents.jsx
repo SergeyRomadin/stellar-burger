@@ -53,7 +53,6 @@ function BurgerComponents({ handleModalOpen }) {
     const makeOrder = async () => {
         await getUserQuery().then((res) => {
             if (!res?.data?.success) return navigate("/login");
-            console.log(userData);
 
             let itemsList = [bun, ...mains, bun];
 

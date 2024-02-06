@@ -10,13 +10,9 @@ function IngredientDetails() {
         stellarApi.useGetIngredientsQuery("");
     const { id } = useParams();
 
-    console.log(id);
-    console.log(ingredients);
-
     const ingredient = ingredients?.find((el) => {
         return el?._id === id;
     });
-    console.log(ingredient);
     if (isFetching || !ingredients) return <p>loading</p>;
 
     return (
