@@ -11,7 +11,6 @@ const MODAL_CONTAINER_ID = "modal-container-id";
 const Modal = ({ onClose, children }) => {
     const rootRef = useRef(null);
     const [isMounted, setMounted] = useState(false);
-    const navigate = useNavigate();
 
     useEffect(() => {
         createContainer({ id: MODAL_CONTAINER_ID });
@@ -20,7 +19,6 @@ const Modal = ({ onClose, children }) => {
 
     const closeModal = () => {
         onClose?.();
-        navigate("/");
     };
 
     useEffect(() => {

@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import BurgerIngredients from "../../BurgerIngredients/BurgerIngredients";
-import BurgerComponents from "../../BurgerComponents/BurgerComponents";
+import BurgerIngredients from "../../components/BurgerIngredients/BurgerIngredients";
+import BurgerComponents from "../../components/BurgerComponents/BurgerComponents";
 import PropTypes from "prop-types";
 
 const Home = ({ handleModalOpen }) => {

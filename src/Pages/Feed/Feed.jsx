@@ -1,18 +1,18 @@
 import styles from "./Feed.module.css";
-import { ingredientPropType } from "../../../utils/prop-types";
+import { ingredientPropType } from "../../utils/prop-types";
 import { useEffect, useRef, useState } from "react";
 import {
     Button,
     CurrencyIcon,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { OredersList } from "../../OrdersList/OrdersList";
-import { stellarApi } from "../../../services/rtk/rtkQuerry/stellarApi";
-import { websocketApi } from "../../../services/rtk/rtkQuerry/websocketApi";
+import { OredersList } from "../../components/OrdersList/OrdersList";
+import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
+import { websocketApi } from "../../services/rtk/rtkQuerry/websocketApi";
 import { Outlet } from "react-router-dom";
 
 function Feed({ openModal }) {
-    const { data } = websocketApi.useGetOrdersFeedQuery();
+    const { data } = websocketApi.useGetOrdersQuery("/all");
 
     console.log(data);
 

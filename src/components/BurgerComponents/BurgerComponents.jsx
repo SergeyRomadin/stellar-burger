@@ -24,7 +24,8 @@ function BurgerComponents({ handleModalOpen }) {
     const ingredients = useSelector(burgerComponentsSelector);
     const dispatch = useDispatch();
     const [postOrder] = stellarApi.usePostOrderMutation();
-    const [getUserQuery, userData] = stellarApi.useLazyGetUserQuery();
+    const [getUserQuery, { data: userData, isFetching: isFetchingUserData }] =
+        stellarApi.useLazyGetUserQuery();
     const navigate = useNavigate();
 
     const [{ isHover }, drop] = useDrop({
@@ -50,24 +51,26 @@ function BurgerComponents({ handleModalOpen }) {
     }, [ingredients]);
 
     const makeOrder = async () => {
-        await getUserQuery();
-        if (!userData) return navigate("/login");
+        await getUserQuery().then((res) => {
+            if (!res?.data?.success) return navigate("/login");
+            console.log(userData);
 
-        let itemsList = [bun, ...mains, bun];
+            let itemsList = [bun, ...mains, bun];
 
-        const order = itemsList.map((ing) => ing?._id);
+            const order = itemsList.map((ing) => ing?._id);
 
-        postOrder({ ingredients: order })
-            .then((res) => {
-                dispatch(initIngredients([]));
-                return handleModalOpen(
-                    <OrderDetails
-                        name={res?.data.name}
-                        orderNum={res?.data?.order?.number}
-                    />
-                );
-            })
-            .catch((err) => console.log(err));
+            postOrder({ ingredients: order })
+                .then((res) => {
+                    dispatch(initIngredients([]));
+                    return handleModalOpen(
+                        <OrderDetails
+                            name={res?.data.name}
+                            orderNum={res?.data?.order?.number}
+                        />
+                    );
+                })
+                .catch((err) => console.log(err));
+        });
     };
 
     const moveCards = (dragIndex, hoverIndex) => {

@@ -1,12 +1,12 @@
 import styles from "../Register.module.css";
-import { ingredientPropType } from "../../../utils/prop-types";
+import { ingredientPropType } from "../../utils/prop-types";
 import { useRef, useState } from "react";
 import {
     Button,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { stellarApi } from "../../../services/rtk/rtkQuerry/stellarApi";
+import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 
 function SignIn() {
     const [valueLogin, setValueLogin] = useState("");

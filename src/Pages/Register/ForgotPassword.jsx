@@ -5,7 +5,7 @@ import {
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
-import { stellarApi } from "../../../services/rtk/rtkQuerry/stellarApi";
+import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 
 function ForgotPassword() {
     const [valueLogin, setValueLogin] = useState("");

@@ -2,13 +2,13 @@ import {
     CurrencyIcon,
     FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "../Pages/Feed/Feed.module.css";
+import styles from "../../Pages/Feed/Feed.module.css";
 import { Order } from "../../services/rtk/rtkQuerry/websocketApi";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const OredersList = ({
-    orders,
+    orders = [],
     openModal,
 }: {
     orders: Order[];

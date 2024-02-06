@@ -3,16 +3,16 @@ import Modal from "../Modal/Modal";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
-import SignIn from "../Pages/Register/SignIn";
-import Register from "../Pages/Register/Register";
-import ForgotPassword from "../Pages/Register/ForgotPassword";
-import ResetPassword from "../Pages/Register/ResetPassword";
-import Profile from "../Pages/Profile/Profile";
-import Feed from "../Pages/Feed/Feed";
+import SignIn from "../../Pages/Register/SignIn";
+import Register from "../../Pages/Register/Register";
+import ForgotPassword from "../../Pages/Register/ForgotPassword";
+import ResetPassword from "../../Pages/Register/ResetPassword";
+import Profile from "../../Pages/Profile/Profile";
+import Feed from "../../Pages/Feed/Feed";
 import { Layout } from "./Layout";
 import { ProtectedRouteElement } from "./ProtectedRouteElement";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import { Home } from "../Pages/Home/Home";
+import { Home } from "../../Pages/Home/Home";
 import { ProfileForm } from "../ProfileForm/ProfileForm";
 import styles from "./app.module.css";
 import { OredersList } from "../OrdersList/OrdersList";
@@ -23,7 +23,7 @@ function App() {
     const navigate = useNavigate();
     const [isModalActive, setModalActive] = useState(false);
     const [modalContent, setModalContent] = useState();
-    const { data: userOrders } = websocketApi.useGetOrdersFeedQuery();
+    const { data: userOrders } = websocketApi.useGetOrdersQuery();
 
     const handleModalOpen = useCallback((content) => {
         if (content) setModalContent(content);

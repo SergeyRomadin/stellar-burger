@@ -173,10 +173,10 @@ export const stellarApi = createApi({
                         deleteCookie("refreshToken");
                         deleteCookie("token");
                         dispatch(stellarApi.util.resetApiState());
-                        await dispatch(stellarApi.endpoints.getUser.initiate());
                     }
                 } catch (err) {
                 } finally {
+                    await dispatch(stellarApi.endpoints.getUser.initiate());
                 }
             },
         }),

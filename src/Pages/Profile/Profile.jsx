@@ -1,6 +1,6 @@
 import styles from "./Profile.module.css";
 
-import { stellarApi } from "../../../services/rtk/rtkQuerry/stellarApi";
+import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
