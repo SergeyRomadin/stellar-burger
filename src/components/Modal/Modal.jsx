@@ -5,6 +5,7 @@ import Portal, { createContainer } from "../Portal/Portal";
 import Styles from "./Modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router-dom";
+import ModalOverlay from "./ModalOverlay";
 
 const MODAL_CONTAINER_ID = "modal-container-id";
 
@@ -46,7 +47,8 @@ const Modal = ({ onClose, children }) => {
 
     return isMounted ? (
         <Portal id={MODAL_CONTAINER_ID}>
-            <div className={Styles.wrap} ref={rootRef} data-testid="wrap">
+            {/* <div className={Styles.wrap} ref={rootRef} data-testid="wrap"> */}
+            <ModalOverlay onClose={onClose}>
                 <div className={`${Styles.content} pr-10 pl-10`}>
                     <button
                         type="button"
@@ -59,7 +61,8 @@ const Modal = ({ onClose, children }) => {
 
                     {children}
                 </div>
-            </div>
+            </ModalOverlay>
+            {/* </div> */}
         </Portal>
     ) : null;
 };
