@@ -68,17 +68,10 @@ function BurgerComponents({ handleModalOpen }: Props) {
             postOrder({ ingredients: order })
                 .then((res) => {
                     dispatch(initIngredients([]));
-                    if (Object.hasOwn(res, "data")) {
-                        // хз как это убрать
-                        const resp = res as {
-                            data: PostOrderResponse;
-                        };
+                    if ("data" in res)
                         return handleModalOpen(
-                            <OrderDetails
-                                orderNum={resp?.data?.order?.number}
-                            />
+                            <OrderDetails orderNum={res?.data?.order?.number} />
                         );
-                    }
                 })
                 .catch((err) => console.log(err));
         });
