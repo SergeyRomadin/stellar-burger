@@ -4,7 +4,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useRef, useState } from "react";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
-import styles from "../Pages/Profile/Profile.module.css";
+import styles from "../../Pages/Profile/Profile.module.css";
 
 export const ProfileForm = () => {
     const [valueName, setValueName] = useState("");

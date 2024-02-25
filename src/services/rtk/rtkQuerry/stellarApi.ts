@@ -15,6 +15,7 @@ import {
     RegisterResponse,
 } from "./stellarApiTypes";
 import { deleteCookie, getCookie, setCookie } from "../../../utils/functions";
+import { Order } from "./websocketApi";
 
 export interface IIngidient {
     id?: string;
@@ -52,8 +53,6 @@ const stellatQuery = retry(
             getCookie("refreshToken");
 
         if (!getCookie("token") && endpointsCondition) {
-            console.log("net cocki");
-            console.log(api.endpoint);
             await api.dispatch(
                 stellarApi.endpoints.refreshToken.initiate(undefined)
             );
@@ -97,6 +96,12 @@ export const stellarApi = createApi({
                     el.id = uuid();
                     return el;
                 });
+            },
+        }),
+        getOrder: builder.query<Order, string>({
+            query: (orderId) => `/orders/${orderId}`,
+            transformResponse: (res: { orders: Order[] }) => {
+                return res.orders[0];
             },
         }),
         postOrder: builder.mutation<unknown, { ingredients: string[] }>({
@@ -166,10 +171,10 @@ export const stellarApi = createApi({
                         deleteCookie("refreshToken");
                         deleteCookie("token");
                         dispatch(stellarApi.util.resetApiState());
-                        await dispatch(stellarApi.endpoints.getUser.initiate());
                     }
                 } catch (err) {
                 } finally {
+                    await dispatch(stellarApi.endpoints.getUser.initiate());
                 }
             },
         }),
