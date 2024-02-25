@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 import Modal from "../Modal/Modal";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -22,7 +22,7 @@ import { OrderInfo } from "../OrderInfo/OrderInfo";
 function App() {
     const navigate = useNavigate();
     const [isModalActive, setModalActive] = useState(false);
-    const [modalContent, setModalContent] = useState();
+    const [modalContent, setModalContent] = useState<JSX.Element | null>();
     const { data: userOrders } = websocketApi.useGetOrdersQuery();
 
     const handleModalOpen = useCallback((content) => {
@@ -39,9 +39,7 @@ function App() {
         <Layout>
             <DndProvider backend={HTML5Backend}>
                 {isModalActive && modalContent && (
-                    <Modal title="some modal title" onClose={handleModalClose}>
-                        {modalContent}
-                    </Modal>
+                    <Modal onClose={handleModalClose}>{modalContent}</Modal>
                 )}
                 {!isModalActive && (
                     <Routes>
@@ -80,10 +78,7 @@ function App() {
                             <Route
                                 path="/ingridients/:id"
                                 element={
-                                    <Modal
-                                        title="some modal title"
-                                        onClose={handleModalClose}
-                                    >
+                                    <Modal onClose={handleModalClose}>
                                         <IngredientDetails />
                                     </Modal>
                                 }
@@ -137,7 +132,7 @@ function App() {
                             element={
                                 <ul>
                                     <OredersList
-                                        orders={userOrders?.orders}
+                                        orders={userOrders?.orders ?? []}
                                         openModal={handleModalOpen}
                                     />
                                     <Outlet />
@@ -148,10 +143,7 @@ function App() {
                                 <Route
                                     path=":id"
                                     element={
-                                        <Modal
-                                            title="some modal title"
-                                            onClose={handleModalClose}
-                                        >
+                                        <Modal onClose={handleModalClose}>
                                             <OrderInfo />
                                         </Modal>
                                     }
@@ -167,10 +159,7 @@ function App() {
                             <Route
                                 path=":id"
                                 element={
-                                    <Modal
-                                        title="some modal title"
-                                        onClose={handleModalClose}
-                                    >
+                                    <Modal onClose={handleModalClose}>
                                         <OrderInfo />
                                     </Modal>
                                 }

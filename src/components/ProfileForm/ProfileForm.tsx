@@ -2,7 +2,15 @@ import {
     Button,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect, useRef, useState } from "react";
+import {
+    Dispatch,
+    FormEvent,
+    RefObject,
+    SetStateAction,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 import styles from "../../Pages/Profile/Profile.module.css";
 
@@ -10,9 +18,9 @@ export const ProfileForm = () => {
     const [valueName, setValueName] = useState("");
     const [valueLogin, setValueLogin] = useState("");
     const [valuePassword, setValuePassword] = useState("");
-    const inputPasswordRef = useRef(null);
-    const inputLoginRef = useRef(null);
-    const inputNameRef = useRef(null);
+    const inputPasswordRef = useRef<HTMLInputElement>(null);
+    const inputLoginRef = useRef<HTMLInputElement>(null);
+    const inputNameRef = useRef<HTMLInputElement>(null);
     const [nameFocus, setNameFocus] = useState(false);
     const [loginFocus, setLoginFocus] = useState(false);
     const [passwordFocus, setPasswordFocus] = useState(false);
@@ -32,12 +40,18 @@ export const ProfileForm = () => {
         }
     }, [profileData]);
 
-    const onIconClick = (ref, setFunc, isFocus) => () => {
-        setTimeout(() => ref.current.focus(), 190);
-        if (isFocus) setFunc("");
-    };
+    const onIconClick =
+        (
+            ref: RefObject<HTMLElement>,
+            setFunc: Dispatch<SetStateAction<string>>,
+            isFocus: boolean
+        ) =>
+        () => {
+            setTimeout(() => ref.current?.focus(), 190);
+            if (isFocus) setFunc("");
+        };
 
-    const onSubmit = async (e) => {
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const reqBody = Object.fromEntries(
@@ -53,17 +67,24 @@ export const ProfileForm = () => {
     };
 
     const onCancel = () => {
-        setValueName(profileData.user.name || "");
-        setValueLogin(profileData.user.email || "");
+        setValueName(profileData?.user.name || "");
+        setValueLogin(profileData?.user.email || "");
     };
 
-    const onFocus = (setFunc, value, ref, time) => () => {
-        if (value) setTimeout(() => ref.current.focus(), 0);
+    const onFocus =
+        (
+            setFunc: Dispatch<React.SetStateAction<boolean>>,
+            value: boolean,
+            ref: RefObject<HTMLInputElement>,
+            time: number
+        ) =>
+        () => {
+            if (value) setTimeout(() => ref.current?.focus(), 0);
 
-        setTimeout(() => {
-            setFunc(value);
-        }, time);
-    };
+            setTimeout(() => {
+                setFunc(value);
+            }, time);
+        };
 
     return (
         <form onSubmit={onSubmit} className={styles.form}>

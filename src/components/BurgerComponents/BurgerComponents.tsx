@@ -4,7 +4,6 @@ import {
     ConstructorElement,
     CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 import { memo, useMemo } from "react";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,22 +17,28 @@ import {
 import { v4 as uuid } from "uuid";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 import { useNavigate } from "react-router-dom";
-import { getCookie } from "../../utils/functions";
+import {
+    IIngidient,
+    PostOrderResponse,
+} from "../../services/rtk/rtkQuerry/stellarApiTypes";
 
-function BurgerComponents({ handleModalOpen }) {
+type Props = {
+    handleModalOpen: (content?: JSX.Element) => void;
+};
+
+function BurgerComponents({ handleModalOpen }: Props) {
     const ingredients = useSelector(burgerComponentsSelector);
     const dispatch = useDispatch();
     const [postOrder] = stellarApi.usePostOrderMutation();
-    const [getUserQuery, { data: userData, isFetching: isFetchingUserData }] =
-        stellarApi.useLazyGetUserQuery();
+    const [getUserQuery] = stellarApi.useLazyGetUserQuery();
     const navigate = useNavigate();
-
-    const [{ isHover }, drop] = useDrop({
+    // eslint-disable-next-line
+    const [_, drop] = useDrop({
         accept: "ingredient",
         collect: (monitor) => ({
             isHover: monitor.isOver(),
         }),
-        drop(item) {
+        drop(item: IIngidient) {
             if (
                 item.type === "bun" &&
                 ingredients.find((el) => el._id === item._id)
@@ -56,23 +61,30 @@ function BurgerComponents({ handleModalOpen }) {
 
             let itemsList = [bun, ...mains, bun];
 
-            const order = itemsList.map((ing) => ing?._id);
+            const order: string[] = itemsList
+                .map((ing) => ing?._id ?? "")
+                .filter((ing) => ing);
 
             postOrder({ ingredients: order })
                 .then((res) => {
                     dispatch(initIngredients([]));
-                    return handleModalOpen(
-                        <OrderDetails
-                            name={res?.data.name}
-                            orderNum={res?.data?.order?.number}
-                        />
-                    );
+                    if (Object.hasOwn(res, "data")) {
+                        // хз как это убрать
+                        const resp = res as {
+                            data: PostOrderResponse;
+                        };
+                        return handleModalOpen(
+                            <OrderDetails
+                                orderNum={resp?.data?.order?.number}
+                            />
+                        );
+                    }
                 })
                 .catch((err) => console.log(err));
         });
     };
 
-    const moveCards = (dragIndex, hoverIndex) => {
+    const moveCards = (dragIndex: number, hoverIndex: number) => {
         const dragCard = mains[dragIndex];
         const newCards = [...mains];
         newCards.splice(dragIndex, 1);
@@ -125,7 +137,8 @@ function BurgerComponents({ handleModalOpen }) {
                 <span className="text text_type_digits-medium pr-2">
                     {mains.reduce((prev, cur, curInd, arr) => {
                         return prev + cur.price;
-                    }, 0) + (bun && bun?.price * 2)}
+                    }, 0) +
+                        (bun?.price ?? 0) * 2}
                 </span>
                 <div className={`${styles.orderIconContainer} mr-10`}>
                     <CurrencyIcon type="primary" />
@@ -144,9 +157,5 @@ function BurgerComponents({ handleModalOpen }) {
         </div>
     );
 }
-
-BurgerComponents.propTypes = {
-    handleModalOpen: PropTypes.func,
-};
 
 export default memo(BurgerComponents);

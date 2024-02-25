@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import PropTypes from "prop-types";
-const createContainer = (options) => {
+
+const createContainer = (options: { id: string; mountNode?: Element }) => {
     if (document.getElementById(options.id)) {
         return;
     }
@@ -15,10 +15,12 @@ const createContainer = (options) => {
 };
 
 const PORTAL_ERROR_MSG = `There is no portal container in markup. Please add portal container with proper id attribute.`;
-
-const Portal = (props) => {
-    const { id, children } = props;
-    const [container, setContainer] = useState();
+type Props = {
+    id: string;
+    children: ReactNode;
+};
+const Portal = ({ id, children }: Props) => {
+    const [container, setContainer] = useState<Element>();
 
     useEffect(() => {
         if (id) {
@@ -35,9 +37,5 @@ const Portal = (props) => {
     return container ? createPortal(children, container) : null;
 };
 
-Portal.propTypes = {
-    id: PropTypes.string,
-    children: PropTypes.node,
-};
 export { createContainer, PORTAL_ERROR_MSG };
 export default Portal;

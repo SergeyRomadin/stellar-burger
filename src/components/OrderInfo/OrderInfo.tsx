@@ -3,9 +3,8 @@ import {
     FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./OrderInfo.module.css";
-import { Order } from "../../services/rtk/rtkQuerry/websocketApi";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export const OrderInfo = () => {
     const { id = "" } = useParams();
@@ -65,6 +64,7 @@ export const OrderInfo = () => {
                             >
                                 <div className={`${styles.ingridient} mr-4`}>
                                     <img
+                                        alt={ingridient.name}
                                         height="90%"
                                         src={ingridient?.image_mobile}
                                     />

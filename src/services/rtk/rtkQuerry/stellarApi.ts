@@ -8,41 +8,17 @@ import { v4 as uuid } from "uuid";
 import {
     ConfirmNewPasswordBody,
     GetUserResponse,
+    IIngidient,
+    IIngredientsResponse,
     LoginBody,
+    Order,
+    PostOrderResponse,
     PostResponse,
     RefreshTokenResponse,
     RegisterBody,
     RegisterResponse,
 } from "./stellarApiTypes";
 import { deleteCookie, getCookie, setCookie } from "../../../utils/functions";
-import { Order } from "./websocketApi";
-
-export interface IIngidient {
-    id?: string;
-    _id: string;
-    name: string;
-    type: "bun" | "main" | "sauce";
-    proteins: number;
-    fat: number;
-    carbohydrates: number;
-    calories: number;
-    price: number;
-    image: string;
-    image_mobile: string;
-    image_large: string;
-    __v: number;
-}
-
-export interface IOrderResponse {
-    name: string;
-    order: { number: number };
-    success: boolean;
-}
-
-interface IIngredientsResponse {
-    success: boolean;
-    data: IIngidient[];
-}
 
 const stellatQuery = retry(
     async (args: string | FetchArgs, api, extraOptions) => {
@@ -104,7 +80,10 @@ export const stellarApi = createApi({
                 return res.orders[0];
             },
         }),
-        postOrder: builder.mutation<unknown, { ingredients: string[] }>({
+        postOrder: builder.mutation<
+            PostOrderResponse,
+            { ingredients: string[] }
+        >({
             query: (order) => ({
                 url: `/orders`,
                 method: "POST",
@@ -155,7 +134,7 @@ export const stellarApi = createApi({
                 } catch (err) {}
             },
         }),
-        logout: builder.mutation<RegisterResponse, RegisterBody>({
+        logout: builder.mutation<RegisterResponse, RegisterBody | void>({
             query: (body) => ({
                 url: `/auth/logout`,
                 method: "POST",

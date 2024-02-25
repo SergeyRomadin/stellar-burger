@@ -7,14 +7,21 @@ import { useDispatch } from "react-redux";
 import styles from "./BurgerComponent.module.css";
 import { remove } from "../../services/rtk/burgerComponentsSlice/burgerComponentsSlice";
 import { useRef } from "react";
-import PropTypes from "prop-types";
+import { IIngidient } from "../../services/rtk/rtkQuerry/stellarApiTypes";
+import { DnDElement } from "../../utils/types";
 
-const BurgerComponent = ({ ingredient, i, moveCards }) => {
+type Props = {
+    ingredient: IIngidient;
+    i: number;
+    moveCards: (dragIndex: number, hoverIndex: number) => void;
+};
+
+const BurgerComponent = ({ ingredient, i, moveCards }: Props) => {
     const dispatch = useDispatch();
 
-    const ref = useRef(null);
-
-    const [{ handlerId }, drop] = useDrop({
+    const ref = useRef<HTMLLIElement>(null);
+    // eslint-disable-next-line
+    const [_, drop] = useDrop<DnDElement, DnDElement, unknown>({
         accept: "component",
         collect(monitor) {
             return {
@@ -39,7 +46,9 @@ const BurgerComponent = ({ ingredient, i, moveCards }) => {
 
             const clientOffset = monitor.getClientOffset();
 
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+            const hoverClientY = clientOffset
+                ? clientOffset.y - hoverBoundingRect.top
+                : 0;
 
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return;
@@ -53,7 +62,11 @@ const BurgerComponent = ({ ingredient, i, moveCards }) => {
         },
     });
 
-    const [{ isDragging }, drag] = useDrag({
+    const [{ isDragging }, drag] = useDrag<
+        { id?: string; index: number },
+        { id?: string; index: number },
+        { isDragging: unknown }
+    >({
         type: "component",
         item: () => {
             return { id: ingredient.id, index: i };
@@ -83,12 +96,6 @@ const BurgerComponent = ({ ingredient, i, moveCards }) => {
             />
         </li>
     );
-};
-
-BurgerComponent.propTypes = {
-    moveCards: PropTypes.func,
-    i: PropTypes.number,
-    ingredient: PropTypes.object,
 };
 
 export { BurgerComponent };

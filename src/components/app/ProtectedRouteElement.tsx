@@ -1,15 +1,10 @@
 import { Navigate } from "react-router-dom";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
-import { useEffect } from "react";
 
-export function ProtectedRouteElement({ element, fromAuth }) {
-    const {
-        data: auth,
-        isError,
-        isFetching,
-        refetch: getUser,
-        isLoading,
-    } = stellarApi.useGetUserQuery();
+type Props = { element: JSX.Element; fromAuth?: boolean };
+
+export function ProtectedRouteElement({ element, fromAuth }: Props) {
+    const { data: auth, isFetching, isLoading } = stellarApi.useGetUserQuery();
 
     if (isFetching || isLoading) return null;
     // if (isError) return <Navigate to="/login" replace />;

@@ -1,17 +1,12 @@
 import styles from "./Feed.module.css";
-import { ingredientPropType } from "../../utils/prop-types";
-import { useEffect, useRef, useState } from "react";
-import {
-    Button,
-    CurrencyIcon,
-    Input,
-} from "@ya.praktikum/react-developer-burger-ui-components";
 import { OredersList } from "../../components/OrdersList/OrdersList";
-import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 import { websocketApi } from "../../services/rtk/rtkQuerry/websocketApi";
 import { Outlet } from "react-router-dom";
+import { HandleModalOpenFn } from "../../utils/types";
 
-function Feed({ openModal }) {
+type Props = { openModal: HandleModalOpenFn };
+
+function Feed({ openModal }: Props) {
     const { data } = websocketApi.useGetOrdersQuery("/all");
 
     return (
@@ -21,7 +16,10 @@ function Feed({ openModal }) {
             </h2>
             <div className={`${styles.flex} ${styles.fullWidth}`}>
                 <div className={`${styles.halfWidth}`}>
-                    <OredersList orders={data?.orders} openModal={openModal} />
+                    <OredersList
+                        orders={data?.orders ?? []}
+                        openModal={openModal}
+                    />
                 </div>
                 <div
                     className={`${styles.flex} ${styles.feedBar} ${styles.halfWidth} ${styles.fdColumn} pl-15 custom-scroll`}
