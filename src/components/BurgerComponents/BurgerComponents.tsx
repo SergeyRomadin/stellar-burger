@@ -6,7 +6,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { memo, useMemo } from "react";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import { BurgerComponent } from "../BurgerComponent/BurgerComponent";
 import {
@@ -21,14 +20,15 @@ import {
     IIngidient,
     PostOrderResponse,
 } from "../../services/rtk/rtkQuerry/stellarApiTypes";
+import { useAppDispatch, useAppSelector } from "../../services/rtk/store";
 
 type Props = {
     handleModalOpen: (content?: JSX.Element) => void;
 };
 
 function BurgerComponents({ handleModalOpen }: Props) {
-    const ingredients = useSelector(burgerComponentsSelector);
-    const dispatch = useDispatch();
+    const ingredients = useAppSelector(burgerComponentsSelector);
+    const dispatch = useAppDispatch();
     const [postOrder] = stellarApi.usePostOrderMutation();
     const [getUserQuery] = stellarApi.useLazyGetUserQuery();
     const navigate = useNavigate();

@@ -3,7 +3,9 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./Tabs.module.css";
 import PropTypes from "prop-types";
 
-const Tabs = ({ current, setCurrent }) => {
+type Props = { current: string; setCurrent: (curent: string) => void };
+
+const Tabs = ({ current, setCurrent }: Props) => {
     return (
         <div className={`${styles.tabs} mt-5`}>
             <Tab

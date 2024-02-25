@@ -3,12 +3,13 @@ import {
     DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, useDrop } from "react-dnd";
-import { useDispatch } from "react-redux";
+
 import styles from "./BurgerComponent.module.css";
 import { remove } from "../../services/rtk/burgerComponentsSlice/burgerComponentsSlice";
 import { useRef } from "react";
 import { IIngidient } from "../../services/rtk/rtkQuerry/stellarApiTypes";
 import { DnDElement } from "../../utils/types";
+import { useAppDispatch } from "../../services/rtk/store";
 
 type Props = {
     ingredient: IIngidient;
@@ -17,7 +18,7 @@ type Props = {
 };
 
 const BurgerComponent = ({ ingredient, i, moveCards }: Props) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const ref = useRef<HTMLLIElement>(null);
     // eslint-disable-next-line

@@ -126,10 +126,12 @@ export const stellarApi = createApi({
                 try {
                     const { data } = await queryFulfilled;
                     if (data.success) {
-                        setCookie("refreshToken", data.refreshToken);
-                        setCookie("token", data.accessToken, {
-                            "max-age": 1200,
-                        });
+                        if (data.refreshToken)
+                            setCookie("refreshToken", data.refreshToken);
+                        if (data.accessToken)
+                            setCookie("token", data.accessToken, {
+                                "max-age": 1200,
+                            });
                     }
                 } catch (err) {}
             },
@@ -170,10 +172,12 @@ export const stellarApi = createApi({
                 try {
                     const { data } = await queryFulfilled;
                     if (data.success) {
-                        setCookie("refreshToken", data.refreshToken);
-                        setCookie("token", data.accessToken, {
-                            "max-age": 1200,
-                        });
+                        if (data.refreshToken)
+                            setCookie("refreshToken", data.refreshToken);
+                        if (data.accessToken)
+                            setCookie("token", data.accessToken, {
+                                "max-age": 1200,
+                            });
                     }
                 } catch (err) {
                 } finally {

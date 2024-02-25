@@ -3,7 +3,6 @@ import { Tabs } from "../Tabs/Tabs";
 import { UIEvent, memo, useCallback, useMemo, useRef, useState } from "react";
 import IngredientItem from "../IngredientItem/IngredientItem";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
-import { useSelector } from "react-redux";
 import { burgerComponentsSelector } from "../../services/rtk/burgerComponentsSlice/burgerComponentsSlice";
 import { useNavigate } from "react-router-dom";
 import {
@@ -11,12 +10,13 @@ import {
     IngridientType,
 } from "../../services/rtk/rtkQuerry/stellarApiTypes";
 import { HandleModalOpenFn } from "../../utils/types";
+import { useAppSelector } from "../../services/rtk/store";
 
 type Props = { handleModalOpen: HandleModalOpenFn };
 
 function BurgerIngredients({ handleModalOpen }: Props) {
     const [current, setCurrent] = useState("Булки");
-    const burgerComponents = useSelector(burgerComponentsSelector);
+    const burgerComponents = useAppSelector(burgerComponentsSelector);
     const navigate = useNavigate();
 
     const { data: ingredients } = stellarApi.useGetIngredientsQuery("");
