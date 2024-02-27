@@ -1,7 +1,9 @@
 import AppHeader from "../AppHeader/AppHeader";
 import styles from "./app.module.css";
-
-export const Layout = ({ children }) => {
+type Props = {
+    children: JSX.Element;
+};
+export const Layout = ({ children }: Props) => {
     return (
         <div className={styles.app}>
             <AppHeader />

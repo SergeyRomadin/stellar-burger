@@ -3,12 +3,10 @@ import styles from "./Profile.module.css";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
 function Profile() {
     const navigate = useNavigate();
     const { pathname } = useLocation();
-    const dispatch = useDispatch();
 
     const [logoutQuery] = stellarApi.useLogoutMutation();
 

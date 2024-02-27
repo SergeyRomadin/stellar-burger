@@ -1,45 +1,55 @@
 import styles from "../Register.module.css";
-import { ingredientPropType } from "../../utils/prop-types";
-import { useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import {
     Button,
     Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 
-function SignIn() {
+function Register() {
+    const [valueName, setValueName] = useState("");
     const [valueLogin, setValueLogin] = useState("");
     const [valuePassword, setValuePassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const inputPasswordRef = useRef(null);
-    const [loginQuery] = stellarApi.useLoginMutation();
-    const navigate = useNavigate();
+    const inputPasswordRef = useRef<HTMLInputElement>(null);
+    const [registerQuery] = stellarApi.useRegisterMutation();
 
     const onIconClick = () => {
-        setTimeout(() => inputPasswordRef.current.focus(), 0);
+        setTimeout(() => inputPasswordRef.current?.focus(), 0);
         setShowPassword(!showPassword);
     };
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent) => {
         e.preventDefault();
-        loginQuery({
+        registerQuery({
             email: valueLogin,
+            name: valueName,
             password: valuePassword,
         });
-        navigate("/");
     };
 
     return (
         <form onSubmit={onSubmit} className={styles.wrapper}>
-            <h2 className={`text text_type_main-medium`}>Вход</h2>
+            <h2 className={`text text_type_main-medium`}>Регистрация</h2>
 
+            <Input
+                type={"text"}
+                placeholder={"Имя"}
+                onChange={(e) => setValueName(e.target.value)}
+                value={valueName}
+                name={"name"}
+                error={false}
+                errorText={"Ошибка"}
+                size={"default"}
+                extraClass="ml-1 pt-6"
+            />
             <Input
                 type={"text"}
                 placeholder={"E-mail"}
                 onChange={(e) => setValueLogin(e.target.value)}
                 value={valueLogin}
-                name={"name"}
+                name={"email"}
                 error={false}
                 errorText={"Ошибка"}
                 size={"default"}
@@ -51,7 +61,7 @@ function SignIn() {
                 onChange={(e) => setValuePassword(e.target.value)}
                 icon={showPassword ? "HideIcon" : "ShowIcon"}
                 value={valuePassword}
-                name={"name"}
+                name={"password"}
                 error={false}
                 ref={inputPasswordRef}
                 onIconClick={onIconClick}
@@ -60,7 +70,7 @@ function SignIn() {
                 extraClass="ml-1 pt-6"
             />
             <Button
-                disabled={!valueLogin || !valuePassword}
+                disabled={!valueLogin || !valuePassword || !valueName}
                 extraClass="mt-6"
                 htmlType="submit"
                 type="primary"
@@ -72,22 +82,13 @@ function SignIn() {
             <p
                 className={`text text_type_main-default text_color_inactive pt-20`}
             >
-                Вы — новый пользователь?
-                <Link to="/register" className={styles.link}>
-                    Зарегистрироватсья
-                </Link>
-            </p>
-
-            <p
-                className={`text text_type_main-default text_color_inactive pt-4`}
-            >
-                Забыли пароль?
-                <Link to="/forgot-password" className={styles.link}>
-                    Восстановить пароль
+                Уже зарегистрированы?
+                <Link to="/login" className={styles.link}>
+                    Войти
                 </Link>
             </p>
         </form>
     );
 }
 
-export default SignIn;
+export default Register;

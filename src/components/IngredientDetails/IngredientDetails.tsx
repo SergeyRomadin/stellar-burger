@@ -1,8 +1,6 @@
 import styles from "./IngredientDetails.module.css";
-import { ingredientPropType } from "../../utils/prop-types";
-import { burgerComponentsSelector } from "../../services/rtk/burgerComponentsSlice/burgerComponentsSlice";
-import { useLocation, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 
 function IngredientDetails() {
@@ -23,13 +21,13 @@ function IngredientDetails() {
                 </h2>
             </div>
             <img
-                src={ingredient.image_large}
-                alt={ingredient.name}
+                src={ingredient && ingredient.image_large}
+                alt={ingredient && ingredient.name}
                 className={`${styles.img}`}
             />
             <div>
                 <h3 className="text text_type_main-medium pt-4 pl-15 pr-15">
-                    {ingredient.name}
+                    {ingredient && ingredient.name}
                 </h3>
                 <ul className={`${styles.nutrientsList} pl-15 pr-15`}>
                     <li className={`${styles.nutrient}`}>
@@ -37,7 +35,7 @@ function IngredientDetails() {
                             Калории,ккал
                         </span>
                         <span className="text text_type_digits-default text_color_inactive pt-2">
-                            {ingredient.calories}
+                            {ingredient && ingredient.calories}
                         </span>
                     </li>
                     <li className={styles.nutrient}>
@@ -45,7 +43,7 @@ function IngredientDetails() {
                             Белки, г
                         </span>
                         <span className="text text_type_digits-default text_color_inactive pt-2">
-                            {ingredient.proteins}
+                            {ingredient && ingredient.proteins}
                         </span>
                     </li>
                     <li className={styles.nutrient}>
@@ -53,7 +51,7 @@ function IngredientDetails() {
                             Жиры, г
                         </span>
                         <span className="text text_type_digits-default text_color_inactive pt-2">
-                            {ingredient.carbohydrates}
+                            {ingredient && ingredient.carbohydrates}
                         </span>
                     </li>
                     <li className={styles.nutrient}>
@@ -61,7 +59,7 @@ function IngredientDetails() {
                             Углеводы, г
                         </span>
                         <span className="text text_type_digits-default text_color_inactive pt-2">
-                            {ingredient.calories}
+                            {ingredient && ingredient.calories}
                         </span>
                     </li>
                 </ul>

@@ -1,39 +1,44 @@
 import styles from "./BurgerIngredients.module.css";
-import { Tabs } from "../Tabs";
-import PropTypes from "prop-types";
-import { memo, useCallback, useMemo, useRef, useState } from "react";
+import { Tabs } from "../Tabs/Tabs";
+import { UIEvent, memo, useCallback, useMemo, useRef, useState } from "react";
 import IngredientItem from "../IngredientItem/IngredientItem";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
-import { useSelector } from "react-redux";
 import { burgerComponentsSelector } from "../../services/rtk/burgerComponentsSlice/burgerComponentsSlice";
 import { useNavigate } from "react-router-dom";
+import {
+    IIngidient,
+    IngridientType,
+} from "../../services/rtk/rtkQuerry/stellarApiTypes";
+import { HandleModalOpenFn } from "../../utils/types";
+import { useAppSelector } from "../../services/rtk/store";
 
-function BurgerIngredients({ handleModalOpen }) {
+type Props = { handleModalOpen: HandleModalOpenFn };
+
+function BurgerIngredients({ handleModalOpen }: Props) {
     const [current, setCurrent] = useState("Булки");
-    const burgerComponents = useSelector(burgerComponentsSelector);
+    const burgerComponents = useAppSelector(burgerComponentsSelector);
     const navigate = useNavigate();
 
     const { data: ingredients } = stellarApi.useGetIngredientsQuery("");
 
-    const bunsRef = useRef(null);
-    const saucesRef = useRef(null);
-    const mainsRef = useRef(null);
+    const bunsRef = useRef<HTMLHeadingElement>(null);
+    const saucesRef = useRef<HTMLHeadingElement>(null);
+    const mainsRef = useRef<HTMLHeadingElement>(null);
 
     const buns = useMemo(
-        () => ingredients?.filter((item) => item.type === "bun"),
+        () => ingredients?.filter((item) => item.type === "bun") ?? [],
         [ingredients]
     );
     const mains = useMemo(
-        () => ingredients?.filter((item) => item.type === "main"),
+        () => ingredients?.filter((item) => item.type === "main") ?? [],
         [ingredients]
     );
     const sauces = useMemo(
-        () => ingredients?.filter((item) => item.type === "sauce"),
+        () => ingredients?.filter((item) => item.type === "sauce") ?? [],
         [ingredients]
     );
 
-    const count = (item_Id, itemType) => {
+    const count = (item_Id: string, itemType: IngridientType) => {
         let count = burgerComponents.filter(
             (item) => item._id === item_Id
         ).length;
@@ -41,7 +46,7 @@ function BurgerIngredients({ handleModalOpen }) {
         return count;
     };
 
-    const renderItems = (items, handleClick) =>
+    const renderItems = (items: IIngidient[], handleClick: () => void) =>
         items?.map((item, i) => {
             return (
                 <IngredientItem
@@ -62,24 +67,24 @@ function BurgerIngredients({ handleModalOpen }) {
     const scrollTo = useCallback((tab) => {
         switch (tab) {
             case "Булки":
-                bunsRef.current.scrollIntoView();
+                bunsRef?.current?.scrollIntoView();
                 break;
             case "Соусы":
-                saucesRef.current.scrollIntoView();
+                saucesRef?.current?.scrollIntoView();
                 break;
             case "Начинки":
-                mainsRef.current.scrollIntoView();
+                mainsRef?.current?.scrollIntoView();
                 break;
             default:
                 throw new Error(`Ошибка скролла: ${tab}`);
         }
     }, []);
 
-    const handlerScroll = (e) => {
+    const handlerScroll = (e: UIEvent<HTMLDivElement>) => {
         [bunsRef, saucesRef, mainsRef].forEach((section) => {
-            const sectionTop = section.current.offsetTop;
-            if (e.target.scrollTop >= sectionTop - 324) {
-                setCurrent(section.current.textContent);
+            const sectionTop = section.current?.offsetTop ?? 0;
+            if ((e.target as HTMLElement).scrollTop >= sectionTop - 324) {
+                setCurrent(section.current?.textContent ?? "");
             }
         });
     };
@@ -87,7 +92,7 @@ function BurgerIngredients({ handleModalOpen }) {
     return (
         <div className={styles.wrapper}>
             <h1 className="text text_type_main-large pt-10">Соберите бургер</h1>
-            <Tabs scrollTo={scrollTo} current={current} setCurrent={scrollTo} />
+            <Tabs current={current} setCurrent={scrollTo} />
 
             <div
                 onScroll={handlerScroll}
@@ -118,9 +123,5 @@ function BurgerIngredients({ handleModalOpen }) {
         </div>
     );
 }
-
-BurgerIngredients.propTypes = {
-    handleModalOpen: PropTypes.func,
-};
 
 export default memo(BurgerIngredients);

@@ -3,12 +3,14 @@ import {
     CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./IngredientItem.module.css";
-import PropTypes from "prop-types";
-import { ingredientPropType } from "../../utils/prop-types";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import { useDrag } from "react-dnd";
+import { IIngidient } from "../../services/rtk/rtkQuerry/stellarApiTypes";
 
-function IngredientItem({ item, count, onClick }) {
+type Props = { item: IIngidient; count: number | null; onClick: () => void };
+
+function IngredientItem({ item, count, onClick }: Props) {
+    // eslint-disable-next-line
     const [_, drag] = useDrag({
         type: "ingredient",
         item,
@@ -32,11 +34,5 @@ function IngredientItem({ item, count, onClick }) {
         </li>
     );
 }
-
-IngredientItem.propTypes = {
-    item: ingredientPropType,
-    count: PropTypes.number,
-    onClick: PropTypes.func,
-};
 
 export default memo(IngredientItem);

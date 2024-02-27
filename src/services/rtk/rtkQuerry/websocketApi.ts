@@ -1,36 +1,6 @@
-import {
-    FetchArgs,
-    createApi,
-    fetchBaseQuery,
-    retry,
-} from "@reduxjs/toolkit/query/react";
-import { v4 as uuid } from "uuid";
-import {
-    ConfirmNewPasswordBody,
-    GetUserResponse,
-    LoginBody,
-    PostResponse,
-    RefreshTokenResponse,
-    RegisterBody,
-    RegisterResponse,
-} from "./stellarApiTypes";
-import { deleteCookie, getCookie, setCookie } from "../../../utils/functions";
-
-export type Order = {
-    _id: string;
-    ingredients: string[];
-    status: string;
-    name: string;
-    createdAt: string;
-    updatedAt: string;
-    number: number;
-};
-export type OrdersResponse = {
-    success: boolean;
-    total: number;
-    totalToday: number;
-    orders: Order[];
-};
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { OrdersResponse } from "./stellarApiTypes";
+import { getCookie } from "../../../utils/functions";
 
 export const websocketApi = createApi({
     reducerPath: "websoketApi",

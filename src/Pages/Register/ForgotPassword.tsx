@@ -1,5 +1,5 @@
 import styles from "../Register.module.css";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import {
     Button,
     Input,
@@ -12,7 +12,7 @@ function ForgotPassword() {
     const [resetPasswordQuery] = stellarApi.useResetPasswordMutation();
     const navigate = useNavigate();
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent) => {
         e.preventDefault();
         resetPasswordQuery(valueLogin);
         navigate("/reset-password", { state: "forgotToReset" });

@@ -1,5 +1,5 @@
 import styles from "../Register.module.css";
-import { useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import {
     Button,
     Input,
@@ -10,7 +10,7 @@ import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 function ResetPassword() {
     const [valuePassword, setValuePassword] = useState("");
     const [valueCode, setValueCode] = useState("");
-    const inputPasswordRef = useRef(null);
+    const inputPasswordRef = useRef<HTMLInputElement>(null);
     const [showPassword, setShowPassword] = useState(false);
 
     const [confirmNewPasswordQuery, { data }] =
@@ -18,7 +18,7 @@ function ResetPassword() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent) => {
         e.preventDefault();
         confirmNewPasswordQuery({ password: valuePassword, token: valueCode });
         if (data?.success) {
@@ -27,7 +27,7 @@ function ResetPassword() {
     };
 
     const onIconClick = () => {
-        setTimeout(() => inputPasswordRef.current.focus(), 0);
+        setTimeout(() => inputPasswordRef.current?.focus(), 0);
         setShowPassword(!showPassword);
     };
 

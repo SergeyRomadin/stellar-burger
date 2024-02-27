@@ -1,4 +1,4 @@
-export function getCookie(name) {
+export function getCookie(name: string) {
     const matches = document.cookie.match(
         new RegExp(
             "(?:^|; )" +
@@ -9,15 +9,19 @@ export function getCookie(name) {
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function setCookie(name, value, props) {
+export function setCookie(
+    name: string,
+    value: string | number | boolean,
+    props?: { [key: string]: unknown }
+) {
     props = props || {};
-    let exp = props.expires;
-    if (typeof exp == "number" && exp) {
+    let exp = props.expires as number | Date;
+    if (typeof exp === "number" && exp) {
         const d = new Date();
         d.setTime(d.getTime() + exp * 1000);
         exp = props.expires = d;
     }
-    if (exp && exp.toUTCString) {
+    if (exp && typeof exp !== "number" && exp.toUTCString) {
         props.expires = exp.toUTCString();
     }
     value = encodeURIComponent(value);
@@ -32,7 +36,7 @@ export function setCookie(name, value, props) {
     document.cookie = updatedCookie;
 }
 
-export function deleteCookie(name) {
+export function deleteCookie(name: string) {
     setCookie(name, "", {
         "max-age": -1,
     });
