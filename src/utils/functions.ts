@@ -21,7 +21,7 @@ export function setCookie(
         d.setTime(d.getTime() + exp * 1000);
         exp = props.expires = d;
     }
-    if (typeof exp !== "number" && exp.toUTCString) {
+    if (exp && typeof exp !== "number" && exp.toUTCString) {
         props.expires = exp.toUTCString();
     }
     value = encodeURIComponent(value);

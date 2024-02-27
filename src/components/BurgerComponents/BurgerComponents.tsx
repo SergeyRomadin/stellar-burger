@@ -16,10 +16,7 @@ import {
 import { v4 as uuid } from "uuid";
 import { stellarApi } from "../../services/rtk/rtkQuerry/stellarApi";
 import { useNavigate } from "react-router-dom";
-import {
-    IIngidient,
-    PostOrderResponse,
-} from "../../services/rtk/rtkQuerry/stellarApiTypes";
+import { IIngidient } from "../../services/rtk/rtkQuerry/stellarApiTypes";
 import { useAppDispatch, useAppSelector } from "../../services/rtk/store";
 
 type Props = {

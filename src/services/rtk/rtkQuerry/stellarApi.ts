@@ -171,14 +171,12 @@ export const stellarApi = createApi({
             async onQueryStarted(body, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
-                    if (data.success) {
-                        if (data.refreshToken)
-                            setCookie("refreshToken", data.refreshToken);
-                        if (data.accessToken)
-                            setCookie("token", data.accessToken, {
-                                "max-age": 1200,
-                            });
-                    }
+                    if (data.refreshToken)
+                        setCookie("refreshToken", data.refreshToken);
+                    if (data.accessToken)
+                        setCookie("token", data.accessToken, {
+                            "max-age": 1200,
+                        });
                 } catch (err) {
                 } finally {
                     dispatch(stellarApi.endpoints.getUser.initiate());
